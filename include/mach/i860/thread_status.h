@@ -1,18 +1,18 @@
 /*
  * Copyright (c) 2004, Apple Computer, Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
- * 
+ *     from this software without specific prior written permission.
+ *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -25,12 +25,12 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-/* 
+/*
  * Copyright (c) 1987, 1988 NeXT, Inc.
- */ 
+ */
 
-#ifndef	_I860_THREAD_STATE_
-#define	_I860_THREAD_STATE_
+#ifndef _I860_THREAD_STATE_
+#define _I860_THREAD_STATE_
 
 /*
  * I860_thread_state_regs		this is the structure that is exported
@@ -39,38 +39,38 @@
  *					never change.
  */
 
-#define	I860_THREAD_STATE_REGS	(4)	/* normal registers */
+#define I860_THREAD_STATE_REGS (4) /* normal registers */
 
 struct i860_thread_state_regs {
-	int	ireg[31];  /* core registers (incl stack pointer, but not r0) */
-	int	freg[30];  /* FPU registers, except f0 and f1 */
-	int	psr;	   /* user's processor status register */
-	int	epsr;	   /* user's extended processor status register */
-	int	db;	   /* user's data breakpoint register */
-	int	pc;	   /* user's program counter */
-	int	_padding_; /* not used */
-	/* Pipeline state for FPU */
-	double	Mres3;
-	double	Ares3;
-	double	Mres2;
-	double	Ares2;
-	double	Mres1;
-	double	Ares1;
-	double	Ires1;
-	double	Lres3m;
-	double	Lres2m;
-	double	Lres1m;
-	double	KR;
-	double	KI;
-	double	T;
-	int	Fsr3;
-	int 	Fsr2;
-	int	Fsr1;
-	int	Mergelo32;
-	int	Mergehi32;
+  int ireg[31];  /* core registers (incl stack pointer, but not r0) */
+  int freg[30];  /* FPU registers, except f0 and f1 */
+  int psr;       /* user's processor status register */
+  int epsr;      /* user's extended processor status register */
+  int db;        /* user's data breakpoint register */
+  int pc;        /* user's program counter */
+  int _padding_; /* not used */
+  /* Pipeline state for FPU */
+  double Mres3;
+  double Ares3;
+  double Mres2;
+  double Ares2;
+  double Mres1;
+  double Ares1;
+  double Ires1;
+  double Lres3m;
+  double Lres2m;
+  double Lres1m;
+  double KR;
+  double KI;
+  double T;
+  int Fsr3;
+  int Fsr2;
+  int Fsr1;
+  int Mergelo32;
+  int Mergehi32;
 };
 
-#define	I860_THREAD_STATE_REGS_COUNT \
-	(sizeof (struct i860_thread_state_regs) / sizeof (int))
+#define I860_THREAD_STATE_REGS_COUNT                                           \
+  (sizeof(struct i860_thread_state_regs) / sizeof(int))
 
-#endif	/* _I860_THREAD_STATE_ */
+#endif /* _I860_THREAD_STATE_ */

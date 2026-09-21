@@ -1,18 +1,18 @@
 /*
  * Copyright (c) 2004, Apple Computer, Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
- * 
+ *     from this software without specific prior written permission.
+ *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -38,31 +38,30 @@
  *	Created.
  */
 
-#ifndef	_NRW_REG_HELP_H_
-#define	_NRW_REG_HELP_H_
+#ifndef _NRW_REG_HELP_H_
+#define _NRW_REG_HELP_H_
 
 /* Bitfield definition aid */
-#define	BITS_WIDTH(msb, lsb)	((msb)-(lsb)+1)
-#define	BIT_WIDTH(pos)		(1)	/* mostly to record the position */
+#define BITS_WIDTH(msb, lsb) ((msb) - (lsb) + 1)
+#define BIT_WIDTH(pos) (1) /* mostly to record the position */
 
 /* Mask creation */
-#define	MKMASK(width, offset)	(((unsigned)-1)>>(32-(width))<<(offset))
-#define	BITSMASK(msb, lsb)	MKMASK(BITS_WIDTH(msb, lsb), lsb & 0x1f)
-#define	BITMASK(pos)		MKMASK(BIT_WIDTH(pos), pos & 0x1f)
+#define MKMASK(width, offset) (((unsigned)-1) >> (32 - (width)) << (offset))
+#define BITSMASK(msb, lsb) MKMASK(BITS_WIDTH(msb, lsb), lsb & 0x1f)
+#define BITMASK(pos) MKMASK(BIT_WIDTH(pos), pos & 0x1f)
 
 /* Register addresses */
-#if	__ASSEMBLER__
-# define	REG_ADDR(type, addr)	(addr)
-#else	/* __ASSEMBLER__ */
-# define	REG_ADDR(type, addr)	(*(volatile type *)(addr))
-#endif	/* __ASSEMBLER__ */
+#if __ASSEMBLER__
+#define REG_ADDR(type, addr) (addr)
+#else /* __ASSEMBLER__ */
+#define REG_ADDR(type, addr) (*(volatile type *)(addr))
+#endif /* __ASSEMBLER__ */
 
 /* Cast a register to be an unsigned */
-#define	CONTENTS(foo)	(*(unsigned *) &(foo))
+#define CONTENTS(foo) (*(unsigned *)&(foo))
 
 /* STRINGIFY -- perform all possible substitutions, then stringify */
-#define	__STR(x)	#x		/* just a helper macro */
-#define	STRINGIFY(x)	__STR(x)
+#define __STR(x) #x /* just a helper macro */
+#define STRINGIFY(x) __STR(x)
 
-
-#endif	/* _NRW_REG_HELP_H_ */
+#endif /* _NRW_REG_HELP_H_ */

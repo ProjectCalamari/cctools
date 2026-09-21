@@ -2,14 +2,14 @@
  * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 /*	$OpenBSD: extract.c,v 1.2 1996/06/26 05:31:20 deraadt Exp $	*/
@@ -67,8 +67,8 @@ static char rcsid[] = "$OpenBSD: extract.c,v 1.2 1996/06/26 05:31:20 deraadt Exp
 #endif /* not lint */
 
 #include <sys/param.h>
-#include <sys/time.h>
 #include <sys/stat.h>
+#include <sys/time.h>
 
 #include <dirent.h>
 #include <err.h>
@@ -88,69 +88,67 @@ static char rcsid[] = "$OpenBSD: extract.c,v 1.2 1996/06/26 05:31:20 deraadt Exp
  *	members date otherwise date is time of extraction.  Does not modify
  *	archive.
  */
-int
-extract(argv)
-	char **argv;
+int extract(argv)
+char **argv;
 {
-	char *file;
-	int afd, all, eval, tfd;
-	struct timeval tv[2];
-	struct stat sb;
-	CF cf;
+  char *file;
+  int afd, all, eval, tfd;
+  struct timeval tv[2];
+  struct stat sb;
+  CF cf;
 
-	eval = 0;
-	tv[0].tv_usec = tv[1].tv_usec = 0;
+  eval = 0;
+  tv[0].tv_usec = tv[1].tv_usec = 0;
 
-	afd = open_archive(O_RDONLY);
+  afd = open_archive(O_RDONLY);
 
-	/* Read from an archive, write to disk; pad on read. */
-	SETCF(afd, archive, 0, 0, RPAD);
-	for (all = !*argv; get_arobj(afd);) {
-		if (all)
-			file = chdr.name;
-		else if (!(file = files(argv))) {
-			skip_arobj(afd);
-			continue;
-		}
+  /* Read from an archive, write to disk; pad on read. */
+  SETCF(afd, archive, 0, 0, RPAD);
+  for (all = !*argv; get_arobj(afd);) {
+    if (all)
+      file = chdr.name;
+    else if (!(file = files(argv))) {
+      skip_arobj(afd);
+      continue;
+    }
 
-		if (options & AR_U && !stat(file, &sb) &&
-		    sb.st_mtime > chdr.date)
-			continue;
+    if (options & AR_U && !stat(file, &sb) && sb.st_mtime > chdr.date)
+      continue;
 
-		if ((tfd = open(file, O_WRONLY|O_CREAT|O_TRUNC, S_IWUSR)) < 0) {
-			warn("%s", file);
-			skip_arobj(afd);
-			eval = 1;
-			continue;
-		}
+    if ((tfd = open(file, O_WRONLY | O_CREAT | O_TRUNC, S_IWUSR)) < 0) {
+      warn("%s", file);
+      skip_arobj(afd);
+      eval = 1;
+      continue;
+    }
 
-		if (options & AR_V)
-			(void)printf("x - %s\n", file);
+    if (options & AR_V)
+      (void)printf("x - %s\n", file);
 
-		cf.wfd = tfd;
-		cf.wname = file;
-		copy_ar(&cf, chdr.size);
+    cf.wfd = tfd;
+    cf.wname = file;
+    copy_ar(&cf, chdr.size);
 
-		if (fchmod(tfd, (short)chdr.mode)) {
-			warn("chmod: %s", file);
-			eval = 1;
-		}
-		if (options & AR_O) {
-			tv[0].tv_sec = tv[1].tv_sec = chdr.date;
-			if (utimes(file, tv)) {
-				warn("utimes: %s", file);
-				eval = 1;
-			}
-		}
-		(void)close(tfd);
-		if (!all && !*argv)
-			break;
-	}
-	close_archive(afd);
+    if (fchmod(tfd, (short)chdr.mode)) {
+      warn("chmod: %s", file);
+      eval = 1;
+    }
+    if (options & AR_O) {
+      tv[0].tv_sec = tv[1].tv_sec = chdr.date;
+      if (utimes(file, tv)) {
+        warn("utimes: %s", file);
+        eval = 1;
+      }
+    }
+    (void)close(tfd);
+    if (!all && !*argv)
+      break;
+  }
+  close_archive(afd);
 
-	if (*argv) {
-		orphans(argv);
-		return (1);
-	}
-	return (0);
-}	
+  if (*argv) {
+    orphans(argv);
+    return (1);
+  }
+  return (0);
+}

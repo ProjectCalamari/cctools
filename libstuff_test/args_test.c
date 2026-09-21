@@ -20,29 +20,27 @@
 
 #define countof(X) (sizeof(X) / sizeof(*X))
 
-__attribute__((format(printf, 1, 2)))
-static char* masprintf(const char * __restrict format, ...)
-{
+__attribute__((format(printf, 1, 2))) static char *
+masprintf(const char *__restrict format, ...) {
   assert(format);
-  
+
   va_list args;
   va_start(args, format);
-  
-  char* s;
+
+  char *s;
   vasprintf(&s, format, args);
-  
+
   va_end(args);
-  
+
   return s;
 }
 
-static void test_args_expand_at_1(void)
-{
-  char* strs[2] = {0};
+static void test_args_expand_at_1(void) {
+  char *strs[2] = {0};
   strs[0] = strdup("/bin/ls");
 
   int argc = 1;
-  char** argv = strs;
+  char **argv = strs;
   int err = args_expand_at(&argc, &argv);
 
   check_uint32("args_expand_at result", 0, err);
@@ -55,15 +53,14 @@ static void test_args_expand_at_1(void)
       free(strs[i]);
 }
 
-static void test_args_expand_at_2(void)
-{
-  char* strs[4] = {0};
+static void test_args_expand_at_2(void) {
+  char *strs[4] = {0};
   strs[0] = strdup("/bin/ls");
   strs[1] = strdup("-ls");
   strs[2] = strdup("/");
 
   int argc = 3;
-  char** argv = strs;
+  char **argv = strs;
   int err = args_expand_at(&argc, &argv);
 
   check_uint32("args_expand_at result", 0, err);
@@ -78,16 +75,15 @@ static void test_args_expand_at_2(void)
       free(strs[i]);
 }
 
-static void test_args_expand_at_3(void)
-{
-  char* strs[5] = {0};
+static void test_args_expand_at_3(void) {
+  char *strs[5] = {0};
   strs[0] = strdup("/bin/ls");
   strs[1] = strdup("@/tmp/missing-ls-args");
   strs[2] = strdup("@/tmp/missing-ls-args");
   strs[3] = strdup("/");
 
   int argc = 4;
-  char** argv = strs;
+  char **argv = strs;
   int err = args_expand_at(&argc, &argv);
 
   check_uint32("args_expand_at result", 0, err);
@@ -103,22 +99,21 @@ static void test_args_expand_at_3(void)
       free(strs[i]);
 }
 
-static void test_args_expand_at_4(void)
-{
-  const char* data = "-ls apple\tbanana\ncarrot    durian\\ fruit 'el burro'\n";
-  char* tempfile = NULL;
-  
+static void test_args_expand_at_4(void) {
+  const char *data = "-ls apple\tbanana\ncarrot    durian\\ fruit 'el burro'\n";
+  char *tempfile = NULL;
+
   if (test_write_tmp_data(data, strlen(data), &tempfile)) {
     test_printerr("failed to write temp data: %s", strerror(errno));
     return;
   }
 
-  char* strs[3] = {0};
+  char *strs[3] = {0};
   strs[0] = strdup("/bin/ls");
   strs[1] = masprintf("@%s", tempfile);
 
   int argc = 2;
-  char** argv = strs;
+  char **argv = strs;
   int err = args_expand_at(&argc, &argv);
 
   check_uint32("args_expand_at result", 0, err);
@@ -140,12 +135,11 @@ static void test_args_expand_at_4(void)
   free(tempfile);
 }
 
-static void test_args_expand_at_5(void)
-{
-  const char* data1 = "    -ls apple\tbanana\ncarrot     \n";
-  const char* data2 = "\n\n\tdurian\\ fruit 'el burro'      \n";
-  char* tempname1 = NULL;
-  char* tempname2 = NULL;
+static void test_args_expand_at_5(void) {
+  const char *data1 = "    -ls apple\tbanana\ncarrot     \n";
+  const char *data2 = "\n\n\tdurian\\ fruit 'el burro'      \n";
+  char *tempname1 = NULL;
+  char *tempname2 = NULL;
 
   if (test_write_tmp_data(data1, strlen(data1), &tempname1)) {
     test_printerr("failed to write temp data: %s", strerror(errno));
@@ -158,13 +152,13 @@ static void test_args_expand_at_5(void)
     return;
   }
 
-  char* strs[4] = {0};
+  char *strs[4] = {0};
   strs[0] = strdup("/bin/ls");
   strs[1] = masprintf("@%s", tempname1);
   strs[2] = masprintf("@%s", tempname2);
 
   int argc = 3;
-  char** argv = strs;
+  char **argv = strs;
   int err = args_expand_at(&argc, &argv);
 
   check_uint32("args_expand_at result", 0, err);
@@ -188,13 +182,12 @@ static void test_args_expand_at_5(void)
   free(tempname2);
 }
 
-static void test_args_expand_at_6(void)
-{
-  const char* data1 = "    -ls apple\tbanana\ncarrot     \n";
-  const char* data2 = "\n\n\tdurian\\ fruit 'el burro'      \n";
-  char* tempname1 = NULL;
-  char* tempname2 = NULL;
-  char* tempname3 = NULL;
+static void test_args_expand_at_6(void) {
+  const char *data1 = "    -ls apple\tbanana\ncarrot     \n";
+  const char *data2 = "\n\n\tdurian\\ fruit 'el burro'      \n";
+  char *tempname1 = NULL;
+  char *tempname2 = NULL;
+  char *tempname3 = NULL;
 
   if (test_write_tmp_data(data1, strlen(data1), &tempname1)) {
     test_printerr("failed to write temp data: %s", strerror(errno));
@@ -207,7 +200,7 @@ static void test_args_expand_at_6(void)
     return;
   }
 
-  char* data3 = masprintf("@%s @%s\n", tempname1, tempname2);
+  char *data3 = masprintf("@%s @%s\n", tempname1, tempname2);
   if (test_write_tmp_data(data3, strlen(data3), &tempname3)) {
     unlink(tempname1);
     free(tempname1);
@@ -219,12 +212,12 @@ static void test_args_expand_at_6(void)
   }
   free(data3);
 
-  char* strs[3] = {0};
+  char *strs[3] = {0};
   strs[0] = strdup("/bin/ls");
   strs[1] = masprintf("@%s", tempname3);
 
   int argc = 2;
-  char** argv = strs;
+  char **argv = strs;
   int err = args_expand_at(&argc, &argv);
 
   check_uint32("args_expand_at result", 0, err);
@@ -250,22 +243,27 @@ static void test_args_expand_at_6(void)
   free(tempname3);
 }
 
-static int test_main(void)
-{
+static int test_main(void) {
   int err = 0;
 
-  if (!err) err = test_add("test args_expand_at with one argument",
-                           test_args_expand_at_1);
-  if (!err) err = test_add("test args_expand_at with many arguments",
-                           test_args_expand_at_2);
-  if (!err) err = test_add("test args_expand_at with missing @ file",
-                           test_args_expand_at_3);
-  if (!err) err = test_add("test args_expand_at with one @ file",
-                           test_args_expand_at_4);
-  if (!err) err = test_add("test args_expand_at with two @ files",
-                           test_args_expand_at_5);
-  if (!err) err = test_add("test args_expand_at with nested @ files",
-                           test_args_expand_at_6);
+  if (!err)
+    err = test_add("test args_expand_at with one argument",
+                   test_args_expand_at_1);
+  if (!err)
+    err = test_add("test args_expand_at with many arguments",
+                   test_args_expand_at_2);
+  if (!err)
+    err = test_add("test args_expand_at with missing @ file",
+                   test_args_expand_at_3);
+  if (!err)
+    err =
+        test_add("test args_expand_at with one @ file", test_args_expand_at_4);
+  if (!err)
+    err =
+        test_add("test args_expand_at with two @ files", test_args_expand_at_5);
+  if (!err)
+    err = test_add("test args_expand_at with nested @ files",
+                   test_args_expand_at_6);
 
   return err;
 }

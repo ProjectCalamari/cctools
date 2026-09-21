@@ -12,11 +12,9 @@
 /* used by error routines as the name of this program */
 char *progname = NULL;
 
-int main(int argc, const char * argv[])
-{
-  progname = (char*)argv[0];
-  
+int main(int argc, const char *argv[]) {
+  progname = (char *)argv[0];
+
   // run the tests
   return test_run();
 }
-

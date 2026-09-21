@@ -26,12 +26,11 @@ extern "C" {
 
 #include "test.h"
 
-#define TEST_INITIALIZE \
-static int test_main(void);\
-__attribute__((constructor)) static void init(void)\
-{\
-test_register_initializer(0, test_main);\
-}\
+#define TEST_INITIALIZE                                                        \
+  static int test_main(void);                                                  \
+  __attribute__((constructor)) static void init(void) {                        \
+    test_register_initializer(0, test_main);                                   \
+  }
 
 TEST_INITIALIZE
 

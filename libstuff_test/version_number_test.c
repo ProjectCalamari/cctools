@@ -15,11 +15,10 @@
 #include <sys/errno.h>
 #include <unistd.h>
 
-static void check_version(const char* version, enum bool success,
-uint32_t expected)
-{
+static void check_version(const char *version, enum bool success,
+                          uint32_t expected) {
   check_set_prefix("get_version_number %s", version);
-  
+
   uint32_t value;
   enum bool result = get_version_number("", version, &value);
 
@@ -27,14 +26,13 @@ uint32_t expected)
   check_uint32("version", expected, value);
 }
 
-static void test_get_version_number(void)
-{
+static void test_get_version_number(void) {
   // silence stderr, because it will cause the test to fail upstream.
   // this code needs to be refactored. And this test will help us do that =
   // some day.
-  FILE* errcpy = stderr;
+  FILE *errcpy = stderr;
   stderr = fopen("/dev/null", "w");
-  
+
   // You'd think passing a empty string to get_version_number would be an
   // error condition, but it is not. It means: 0.
   check_version("", TRUE, 0x0);
@@ -62,21 +60,21 @@ static void test_get_version_number(void)
   check_version("0.-1", FALSE, 0);
   check_version("0.0.-1", FALSE, 0);
   check_version("0.-1000", FALSE, 0);
-  
+
   check_version("a", FALSE, 0);
   check_version("0.a", FALSE, 0);
   check_version("0.0.a", FALSE, 0);
-  
+
   // restore stderr
   fclose(stderr);
   stderr = errcpy;
 }
 
-static int test_main(void)
-{
+static int test_main(void) {
   int err = 0;
-  
-  if (!err) err = test_add("test get_version_number", test_get_version_number);
-  
+
+  if (!err)
+    err = test_add("test get_version_number", test_get_version_number);
+
   return err;
 }

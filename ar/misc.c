@@ -2,14 +2,14 @@
  * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 /*	$OpenBSD: misc.c,v 1.2 1996/06/26 05:31:21 deraadt Exp $	*/
@@ -81,34 +81,32 @@ static char rcsid[] = "$OpenBSD: misc.c,v 1.2 1996/06/26 05:31:21 deraadt Exp $"
 #include "extern.h"
 #include "pathnames.h"
 
-char *tname = "temporary file";		/* temporary file "name" */
+char *tname = "temporary file"; /* temporary file "name" */
 
-int
-tmp()
-{
-	extern char *envtmp;
-	sigset_t set, oset;
-	static int first;
-	int fd;
-	char path[MAXPATHLEN];
+int tmp() {
+  extern char *envtmp;
+  sigset_t set, oset;
+  static int first;
+  int fd;
+  char path[MAXPATHLEN];
 
-	if (!first && !envtmp) {
-		envtmp = getenv("TMPDIR");
-		first = 1;
-	}
+  if (!first && !envtmp) {
+    envtmp = getenv("TMPDIR");
+    first = 1;
+  }
 
-	if (envtmp)
-		(void)sprintf(path, "%s/%s", envtmp, _NAME_ARTMP);
-	else
-		strcpy(path, _PATH_ARTMP);
-	
-	sigfillset(&set);
-	(void)sigprocmask(SIG_BLOCK, &set, &oset);
-	if ((fd = mkstemp(path)) == -1)
-		error(tname);
-        (void)unlink(path);
-	(void)sigprocmask(SIG_SETMASK, &oset, NULL);
-	return (fd);
+  if (envtmp)
+    (void)sprintf(path, "%s/%s", envtmp, _NAME_ARTMP);
+  else
+    strcpy(path, _PATH_ARTMP);
+
+  sigfillset(&set);
+  (void)sigprocmask(SIG_BLOCK, &set, &oset);
+  if ((fd = mkstemp(path)) == -1)
+    error(tname);
+  (void)unlink(path);
+  (void)sigprocmask(SIG_SETMASK, &oset, NULL);
+  return (fd);
 }
 
 /*
@@ -116,62 +114,53 @@ tmp()
  *	See if the current file matches any file in the argument list; if it
  * 	does, remove it from the argument list.
  */
-char *
-files(argv)
-	char **argv;
+char *files(argv)
+char **argv;
 {
-	char **list, *p;
+  char **list, *p;
 
-	for (list = argv; *list; ++list)
-		if (compare(*list)) {
-			p = *list;
-			for (; (list[0] = list[1]); ++list)
-				continue;
-			return (p);
-		}
-	return (NULL);
+  for (list = argv; *list; ++list)
+    if (compare(*list)) {
+      p = *list;
+      for (; (list[0] = list[1]); ++list)
+        continue;
+      return (p);
+    }
+  return (NULL);
 }
 
-void
-orphans(argv)
-	char **argv;
+void orphans(argv) char **argv;
 {
 
-	for (; *argv; ++argv)
-		warnx("%s: not found in archive", *argv);
+  for (; *argv; ++argv)
+    warnx("%s: not found in archive", *argv);
 }
 
-char *
-rname(path)
-	char *path;
+char *rname(path)
+char *path;
 {
-	char *ind;
+  char *ind;
 
-	return ((ind = strrchr(path, '/')) ? ind + 1 : path);
+  return ((ind = strrchr(path, '/')) ? ind + 1 : path);
 }
 
-int
-compare(dest)
-	char *dest;
+int compare(dest)
+char *dest;
 {
 
-	if (options & AR_TR)
-		return (!strncmp(chdr.name, rname(dest), OLDARMAXNAME));
-	return (!strcmp(chdr.name, rname(dest)));
+  if (options & AR_TR)
+    return (!strncmp(chdr.name, rname(dest), OLDARMAXNAME));
+  return (!strcmp(chdr.name, rname(dest)));
 }
 
-void
-badfmt()
-{
+void badfmt() {
 
-	errno = EFTYPE;
-	err(1, "%s", archive);
+  errno = EFTYPE;
+  err(1, "%s", archive);
 }
 
-void
-error(name)
-	char *name;
+void error(name) char *name;
 {
 
-	err(1, "%s", name);
+  err(1, "%s", name);
 }

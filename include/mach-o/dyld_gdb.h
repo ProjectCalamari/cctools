@@ -2,14 +2,14 @@
  * Copyright (c) 2003 Apple Computer, Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 #ifndef _DYLD_GDB_
@@ -37,7 +37,7 @@
  */
 extern unsigned int gdb_dyld_version;
 
-/* 
+/*
  * gdb_dyld_state_changed is the internal dyld routine called by dyld to notify
  * gdb that the state of the data structures has changed.  gdb is expected to
  * put a break point on this routine and re-read the internal dyld data
@@ -54,12 +54,12 @@ extern void gdb_dyld_state_changed(void);
  *
  *  struct object_images {
  *      struct object_image images[NOBJECT_IMAGES];
- *      unsigned long nimages; 
- *      struct object_images *next_images; 
+ *      unsigned long nimages;
+ *      struct object_images *next_images;
  *      ...
  *  };
  *
- *  struct library_images { 
+ *  struct library_images {
  *      struct library_image images[NLIBRARY_IMAGES];
  *      unsigned long nimages;
  *      struct library_images *next_images;
@@ -69,7 +69,7 @@ extern void gdb_dyld_state_changed(void);
  * Both the object_image structure and the library_image structure
  * start with a structure containing the following fields:
  *
- *  struct image {   
+ *  struct image {
  *      char *physical_name;        physical image name (file name)
  *      unsigned long vmaddr_slide; the slide from the staticly linked address
  *      struct mach_header *mh;     address of the mach header of the image

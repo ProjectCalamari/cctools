@@ -2,14 +2,14 @@
  * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 /*	$OpenBSD: printlist.c,v 1.2 1996/06/26 05:33:59 deraadt Exp $	*/
@@ -55,9 +55,9 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-#include <stdlib.h>
-#include "stuff/errors.h"
 #include "gprof.h"
+#include "stuff/errors.h"
+#include <stdlib.h>
 
 /*
  * these are the lists of names:
@@ -65,44 +65,36 @@
  * is a pointer to the list head
  * (for ease of passing to stringlist functions).
  */
-struct stringlist	fhead = { 0 , 0 };
-struct stringlist	*flist = &fhead;
-struct stringlist	Fhead = { 0 , 0 };
-struct stringlist	*Flist = &Fhead;
-struct stringlist	ehead = { 0 , 0 };
-struct stringlist	*elist = &ehead;
-struct stringlist	Ehead = { 0 , 0 };
-struct stringlist	*Elist = &Ehead;
+struct stringlist fhead = {0, 0};
+struct stringlist *flist = &fhead;
+struct stringlist Fhead = {0, 0};
+struct stringlist *Flist = &Fhead;
+struct stringlist ehead = {0, 0};
+struct stringlist *elist = &ehead;
+struct stringlist Ehead = {0, 0};
+struct stringlist *Elist = &Ehead;
 
-void
-addlist(
-struct stringlist *listp,
-char *funcname)
-{
-    struct stringlist *slp;
+void addlist(struct stringlist *listp, char *funcname) {
+  struct stringlist *slp;
 
-	slp = (struct stringlist *)malloc(sizeof(struct stringlist));
-	if(slp == NULL)
-	    fatal("ran out room for printlist");
-	slp->next = listp->next;
-	slp->string = funcname;
-	listp->next = slp;
+  slp = (struct stringlist *)malloc(sizeof(struct stringlist));
+  if (slp == NULL)
+    fatal("ran out room for printlist");
+  slp->next = listp->next;
+  slp->string = funcname;
+  listp->next = slp;
 }
 
-enum bool
-onlist(
-struct stringlist *listp,
-char *funcname)
-{
-    struct stringlist *slp;
+enum bool onlist(struct stringlist *listp, char *funcname) {
+  struct stringlist *slp;
 
-	for(slp = listp->next; slp; slp = slp->next){
-	    if(!strcmp(slp->string, funcname)){
-		return(TRUE);
-	    }
-	    if(funcname[0] == '_' && !strcmp(slp->string, &funcname[1])){
-		return(TRUE);
-	    }
-	}
-	return(FALSE);
+  for (slp = listp->next; slp; slp = slp->next) {
+    if (!strcmp(slp->string, funcname)) {
+      return (TRUE);
+    }
+    if (funcname[0] == '_' && !strcmp(slp->string, &funcname[1])) {
+      return (TRUE);
+    }
+  }
+  return (FALSE);
 }

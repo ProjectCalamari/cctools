@@ -2,14 +2,14 @@
  * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 /*	$OpenBSD: contents.c,v 1.2 1996/06/26 05:31:19 deraadt Exp $	*/
@@ -86,39 +86,38 @@ static char rcsid[] = "$OpenBSD: contents.c,v 1.2 1996/06/26 05:31:19 deraadt Ex
  *	Handles t[v] option - opens the archive and then reads headers,
  *	skipping member contents.
  */
-int
-contents(argv)
-	char **argv;
+int contents(argv)
+char **argv;
 {
-	int afd, all;
-	struct tm *tp;
-	char *file, buf[25];
-	
-	afd = open_archive(O_RDONLY);
+  int afd, all;
+  struct tm *tp;
+  char *file, buf[25];
 
-	for (all = !*argv; get_arobj(afd);) {
-		if (all)
-			file = chdr.name;
-		else if (!(file = files(argv)))
-			goto next;
-		if (options & AR_V) {
-			(void)strmode(chdr.mode, buf);
-			(void)printf("%s %6d/%-6d %8qd ",
-			    buf + 1, chdr.uid, chdr.gid, chdr.size);
-			tp = localtime(&chdr.date);
-			(void)strftime(buf, sizeof(buf), "%b %e %H:%M %Y", tp);
-			(void)printf("%s %s\n", buf, file);
-		} else
-			(void)printf("%s\n", file);
-		if (!all && !*argv)
-			break;
-next:		skip_arobj(afd);
-	} 
-	close_archive(afd);
+  afd = open_archive(O_RDONLY);
 
-	if (*argv) {
-		orphans(argv);
-		return (1);
-	}
-	return (0);
+  for (all = !*argv; get_arobj(afd);) {
+    if (all)
+      file = chdr.name;
+    else if (!(file = files(argv)))
+      goto next;
+    if (options & AR_V) {
+      (void)strmode(chdr.mode, buf);
+      (void)printf("%s %6d/%-6d %8qd ", buf + 1, chdr.uid, chdr.gid, chdr.size);
+      tp = localtime(&chdr.date);
+      (void)strftime(buf, sizeof(buf), "%b %e %H:%M %Y", tp);
+      (void)printf("%s %s\n", buf, file);
+    } else
+      (void)printf("%s\n", file);
+    if (!all && !*argv)
+      break;
+  next:
+    skip_arobj(afd);
+  }
+  close_archive(afd);
+
+  if (*argv) {
+    orphans(argv);
+    return (1);
+  }
+  return (0);
 }

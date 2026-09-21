@@ -8,11 +8,10 @@
 #define MACH_HEADER mach_header
 #endif
 
-int main(void)
-{
-  const struct MACH_HEADER* mhp = &_mh_execute_header;
+int main(void) {
+  const struct MACH_HEADER *mhp = &_mh_execute_header;
   unsigned long size;
-  const unsigned char* buf = getsectiondata(mhp, "Memento", "Mori", &size);
+  const unsigned char *buf = getsectiondata(mhp, "Memento", "Mori", &size);
   if (buf) {
     printf("%s", buf);
   }

@@ -2,14 +2,14 @@
  * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 /*	$OpenBSD: delete.c,v 1.2 1996/06/26 05:31:19 deraadt Exp $	*/
@@ -83,42 +83,41 @@ static char rcsid[] = "$OpenBSD: delete.c,v 1.2 1996/06/26 05:31:19 deraadt Exp 
  * delete --
  *	Deletes named members from the archive.
  */
-int
-delete(argv)
-	char **argv;
+int delete(argv)
+char **argv;
 {
-	CF cf;
-	off_t size;
-	int afd, tfd;
-	char *file;
+  CF cf;
+  off_t size;
+  int afd, tfd;
+  char *file;
 
-	afd = open_archive(O_RDWR);
-	tfd = tmp();
+  afd = open_archive(O_RDWR);
+  tfd = tmp();
 
-	/* Read and write to an archive; pad on both. */
-	SETCF(afd, archive, tfd, tname, RPAD|WPAD);
-	while (get_arobj(afd)) {
-		if (*argv && (file = files(argv))) {
-			if (options & AR_V)
-				(void)printf("d - %s\n", file);
-			skip_arobj(afd);
-			continue;
-		}
-		put_arobj(&cf, (struct stat *)NULL);
-	}
+  /* Read and write to an archive; pad on both. */
+  SETCF(afd, archive, tfd, tname, RPAD | WPAD);
+  while (get_arobj(afd)) {
+    if (*argv && (file = files(argv))) {
+      if (options & AR_V)
+        (void)printf("d - %s\n", file);
+      skip_arobj(afd);
+      continue;
+    }
+    put_arobj(&cf, (struct stat *)NULL);
+  }
 
-	size = lseek(tfd, (off_t)0, SEEK_CUR);
-	(void)lseek(tfd, (off_t)0, SEEK_SET);
-	(void)lseek(afd, (off_t)SARMAG, SEEK_SET);
-	SETCF(tfd, tname, afd, archive, NOPAD);
-	copy_ar(&cf, size);
-	(void)close(tfd);
-	(void)ftruncate(afd, size + SARMAG);
-	close_archive(afd);
+  size = lseek(tfd, (off_t)0, SEEK_CUR);
+  (void)lseek(tfd, (off_t)0, SEEK_SET);
+  (void)lseek(afd, (off_t)SARMAG, SEEK_SET);
+  SETCF(tfd, tname, afd, archive, NOPAD);
+  copy_ar(&cf, size);
+  (void)close(tfd);
+  (void)ftruncate(afd, size + SARMAG);
+  close_archive(afd);
 
-	if (*argv) {
-		orphans(argv);
-		return (1);
-	}
-	return (0);
-}	
+  if (*argv) {
+    orphans(argv);
+    return (1);
+  }
+  return (0);
+}

@@ -1,1 +1,1 @@
-void x(void){}
+void x(void) {}

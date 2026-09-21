@@ -2,14 +2,14 @@
  * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 /*	$OpenBSD: lookup.c,v 1.2 1996/06/26 05:33:53 deraadt Exp $	*/
@@ -59,75 +59,65 @@
 
 /*
  * look up an address in a sorted-by-address namelist
- *    this deals with misses by mapping them to the next lower 
+ *    this deals with misses by mapping them to the next lower
  *    entry point.
  */
-nltype *
-nllookup(
-uint64_t address)
-{
-    int32_t low;
-    int32_t middle;
-    int32_t high;
+nltype *nllookup(uint64_t address) {
+  int32_t low;
+  int32_t middle;
+  int32_t high;
 
 #ifdef DEBUG
-    int probes;
+  int probes;
 
-	probes = 0;
+  probes = 0;
 #endif
-	for(low = 0, high = nname; low != high ; ){
+  for (low = 0, high = nname; low != high;) {
 #ifdef DEBUG
-	    probes += 1;
+    probes += 1;
 #endif
-	    middle = (high + low) >> 1;
-	    if(nl[middle].value <= address && nl[middle+1].value > address){
+    middle = (high + low) >> 1;
+    if (nl[middle].value <= address && nl[middle + 1].value > address) {
 #ifdef DEBUG
-		if(debug & LOOKUPDEBUG){
-		    printf("[nllookup] %d (%u) probes\n", probes, nname-1);
-		}
+      if (debug & LOOKUPDEBUG) {
+        printf("[nllookup] %d (%u) probes\n", probes, nname - 1);
+      }
 #endif
-		return(&nl[middle]);
-	    }
-	    if(nl[middle].value > address){
-		high = middle;
-	    }
-	    else{
-		low = middle + 1;
-	    }
-	}
-	fprintf(stderr, "[nllookup] binary search fails for address 0x%x\n",
-		(unsigned int)address );
-	return(NULL);
+      return (&nl[middle]);
+    }
+    if (nl[middle].value > address) {
+      high = middle;
+    } else {
+      low = middle + 1;
+    }
+  }
+  fprintf(stderr, "[nllookup] binary search fails for address 0x%x\n",
+          (unsigned int)address);
+  return (NULL);
 }
 
-arctype *
-arclookup(
-nltype *parentp,
-nltype *childp)
-{
-    arctype *arcp;
+arctype *arclookup(nltype *parentp, nltype *childp) {
+  arctype *arcp;
 
-	if(parentp == 0 || childp == 0){
-	    printf("[arclookup] parentp == 0 || childp == 0\n");
-	    return(NULL);
-	}
+  if (parentp == 0 || childp == 0) {
+    printf("[arclookup] parentp == 0 || childp == 0\n");
+    return (NULL);
+  }
 #ifdef DEBUG
-	if(debug & LOOKUPDEBUG){
-	    printf("[arclookup] parent %s child %s\n",
-		   parentp->name, childp->name);
-	}
+  if (debug & LOOKUPDEBUG) {
+    printf("[arclookup] parent %s child %s\n", parentp->name, childp->name);
+  }
 #endif
-	for(arcp = parentp->children; arcp ; arcp = arcp->arc_childlist){
+  for (arcp = parentp->children; arcp; arcp = arcp->arc_childlist) {
 #ifdef DEBUG
-	    if(debug & LOOKUPDEBUG){
-		printf("[arclookup]\t arc_parent %s arc_child %s\n",
-		       arcp->arc_parentp->name,
-		       arcp->arc_childp->name);
-	    }
+    if (debug & LOOKUPDEBUG) {
+      printf("[arclookup]\t arc_parent %s arc_child %s\n",
+             arcp->arc_parentp->name, arcp->arc_childp->name);
+    }
 #endif
-	    if(arcp->arc_childp == childp){
-		return(arcp);
-	    }
-	}
-	return(NULL);
+    if (arcp->arc_childp == childp) {
+      return (arcp);
+    }
+  }
+  return (NULL);
 }

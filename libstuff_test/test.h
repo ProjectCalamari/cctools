@@ -37,53 +37,53 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
-    
+
 typedef int (*test_initializer_func)(void);
 int test_register_initializer(int order, test_initializer_func initializer);
 
 typedef void (*test_func)(void);
 
 struct test {
-  const char* name;
+  const char *name;
   test_func testfunc;
 };
 
-#define TEST_ENTRY(NAME, FUNC) { NAME, FUNC }
-    
-int test_add(const char* name, test_func test);
+#define TEST_ENTRY(NAME, FUNC) {NAME, FUNC}
+
+int test_add(const char *name, test_func test);
 
 int test_run(void);
 int test_run_tests(struct test tests[], uint32_t ntests);
 
 void test_abort(void);
-void test_printinfo(const char * __restrict format, ...)
-     __attribute__((format(printf, 1, 2)));
-void test_printerr(const char * __restrict format, ...)
-     __attribute__((format(printf, 1, 2)));
+void test_printinfo(const char *__restrict format, ...)
+    __attribute__((format(printf, 1, 2)));
+void test_printerr(const char *__restrict format, ...)
+    __attribute__((format(printf, 1, 2)));
 
-void test_vprintinfo(const char * __restrict format, va_list ap)
-     __attribute__((format(printf, 1, 0)));
-void test_vprinterr(const char * __restrict format, va_list ap)
-     __attribute__((format(printf, 1, 0)));
+void test_vprintinfo(const char *__restrict format, va_list ap)
+    __attribute__((format(printf, 1, 0)));
+void test_vprinterr(const char *__restrict format, va_list ap)
+    __attribute__((format(printf, 1, 0)));
 
-void check_set_prefix(const char* fmt, ...)
-     __attribute__((format(printf, 1, 2)));
-  
-int check_bool (const char* name, bool orig, bool copy);
-int check_uint32(const char* name, uint32_t orig, uint32_t copy);
-int check_uint64(const char* name, uint64_t orig, uint64_t copy);
-int check_pointer(const char* name, const void* orig, const void* copy);
+void check_set_prefix(const char *fmt, ...)
+    __attribute__((format(printf, 1, 2)));
 
-int check_string(const char* name, const char* orig, const char* copy);
-int check_memory(const char* name, const void* orig, const void* copy,
+int check_bool(const char *name, bool orig, bool copy);
+int check_uint32(const char *name, uint32_t orig, uint32_t copy);
+int check_uint64(const char *name, uint64_t orig, uint64_t copy);
+int check_pointer(const char *name, const void *orig, const void *copy);
+
+int check_string(const char *name, const char *orig, const char *copy);
+int check_memory(const char *name, const void *orig, const void *copy,
                  uint64_t size);
-int check_zerofill(const char* name, const unsigned char* buf, size_t size);
+int check_zerofill(const char *name, const unsigned char *buf, size_t size);
 
-int check_null(const char* name, void* copy);
-int check_nonnull(const char* name, void* copy);
-int check_count(const char* name, uint32_t orig, uint32_t copy);
-//int check_zero(const char* name, uint32_t copy);
-int check_nonzero(const char* name, uint32_t copy);
+int check_null(const char *name, void *copy);
+int check_nonnull(const char *name, void *copy);
+int check_count(const char *name, uint32_t orig, uint32_t copy);
+// int check_zero(const char* name, uint32_t copy);
+int check_nonzero(const char *name, uint32_t copy);
 
 #ifdef __cplusplus
 }

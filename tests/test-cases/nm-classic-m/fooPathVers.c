@@ -1,1 +1,1 @@
-void fooPathVers(void){}
+void fooPathVers(void) {}

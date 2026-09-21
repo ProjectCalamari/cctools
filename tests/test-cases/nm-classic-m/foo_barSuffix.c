@@ -1,1 +1,1 @@
-void foo_barSuffix(void){}
+void foo_barSuffix(void) {}

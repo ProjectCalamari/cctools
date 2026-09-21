@@ -2,7 +2,4 @@
 #define FOO foo
 #endif
 
-int FOO(void)
-{
-  return 0;
-}
+int FOO(void) { return 0; }

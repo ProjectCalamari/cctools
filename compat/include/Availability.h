@@ -1,0 +1,10 @@
+#ifndef CCTOOLS_COMPAT_AVAILABILITY_H
+#define CCTOOLS_COMPAT_AVAILABILITY_H
+#define __API_AVAILABLE(...)
+#define __API_UNAVAILABLE(...)
+#define __API_DEPRECATED(...)
+#define __API_DEPRECATED_WITH_REPLACEMENT(...)
+#define API_AVAILABLE(...)
+#define API_UNAVAILABLE(...)
+#define API_DEPRECATED(...)
+#endif

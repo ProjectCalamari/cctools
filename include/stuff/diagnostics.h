@@ -51,7 +51,7 @@ void diagnostics_enable(enum bool enable);
  * diagnostics_output() can be used to direct diagnostic logs to a file.
  * If logfile is NULL or unspecified diagnostics will be written to STDERR.
  */
-void diagnostics_output(const char* logfile);
+void diagnostics_output(const char *logfile);
 
 /*
  * diagnostics_enabled() returns TRUE if diagnostics are enabled. Call this
@@ -62,12 +62,12 @@ enum bool diagnostics_enabled(void);
 /*
  * diagnostics_log_args() logs command arguments in the diagnostics output.
  */
-void diagnostics_log_args(int argc, char** argv);
+void diagnostics_log_args(int argc, char **argv);
 
 /*
  * diagnostics_log_msg() logs a single instance of a diagnostic message.
  */
-void diagnostics_log_msg(enum diagnostic_level level, const char* message);
+void diagnostics_log_msg(enum diagnostic_level level, const char *message);
 
 /*
  * diagnostics_write() writes the complete diagnostic XML structure to the file

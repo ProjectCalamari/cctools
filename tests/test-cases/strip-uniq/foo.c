@@ -1,10 +1,6 @@
-static int debug(void)
-{
-  return 0;
-}
+static int debug(void) { return 0; }
 
-int foo(void)
-{
+int foo(void) {
   debug();
   return 0;
 }

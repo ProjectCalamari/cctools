@@ -1,18 +1,18 @@
 /*
  * Copyright (c) 2004, Apple Computer, Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
- * 
+ *     from this software without specific prior written permission.
+ *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -44,8 +44,8 @@
 #import <architecture/nrw/reg_help.h>
 
 /* Stack pointer must always be a multiple of 16 */
-#define	STACK_INCR	16
-#define	ROUND_FRAME(x)	((((unsigned)(x)) + STACK_INCR - 1) & ~(STACK_INCR-1))
+#define STACK_INCR 16
+#define ROUND_FRAME(x) ((((unsigned)(x)) + STACK_INCR - 1) & ~(STACK_INCR - 1))
 
 /*
  * REG_PAIR_DEF -- define a register pair
@@ -63,11 +63,11 @@
  * Access to individual entries of the pair is via the REG_PAIR
  * macro (below).
  */
-#define	REG_PAIR_DEF(type0, name0, type1, name1)		\
-	struct {						\
-		type0	name0 __attribute__(( aligned(8) ));	\
-		type1	name1;					\
-	} name0##_##name1
+#define REG_PAIR_DEF(type0, name0, type1, name1)                               \
+  struct {                                                                     \
+    type0 name0 __attribute__((aligned(8)));                                   \
+    type1 name1;                                                               \
+  } name0##_##name1
 
 /*
  * REG_PAIR -- Macro to define names for accessing individual registers
@@ -80,7 +80,6 @@
  * eg:
  *	#define	foo_barp	REG_PAIR(barp, afu, afu)
  */
-#define	REG_PAIR(name0, name1, the_name)			\
-	name0##_##name1.the_name
+#define REG_PAIR(name0, name1, the_name) name0##_##name1.the_name
 
-#endif  /* _ARCH_M88K_REG_HELP_H_ */
+#endif /* _ARCH_M88K_REG_HELP_H_ */

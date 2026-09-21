@@ -1,7 +1,7 @@
 @protocol Verbing
 + (void)classVerb;
-- (void) verb;
-@property (nonatomic, readonly) int intProperty;
+- (void)verb;
+@property(nonatomic, readonly) int intProperty;
 
 @optional
 + (void)classOptionalVerb;

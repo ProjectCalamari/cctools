@@ -1,1 +1,1 @@
-void fooPath(void){}
+void fooPath(void) {}

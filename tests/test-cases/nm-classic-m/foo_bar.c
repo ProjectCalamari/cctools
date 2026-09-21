@@ -1,1 +1,1 @@
-void foo_bar(void){}
+void foo_bar(void) {}

@@ -1,1 +1,1 @@
-void fooSuffix(void){}
+void fooSuffix(void) {}

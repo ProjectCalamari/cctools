@@ -11,22 +11,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-char* progname;
+char *progname;
 
-void usage(const char * __restrict format, ...)
-     __attribute__((format(printf, 1, 2)));
+void usage(const char *__restrict format, ...)
+    __attribute__((format(printf, 1, 2)));
 
-int main(int argc, const char * argv[])
-{
-  progname = (char*)*argv++;
+int main(int argc, const char *argv[]) {
+  progname = (char *)*argv++;
   argc--;
-  
+
   if (argc == 0)
-      usage(NULL);
-  
+    usage(NULL);
+
   int showPaths = argc > 1;
-  while (argc > 0)
-  {
+  while (argc > 0) {
     if (showPaths)
       printf("%s:\n", *argv);
     depinfo_read(*argv, DI_READ_LOG | DI_READ_NORETVAL);
@@ -38,23 +36,23 @@ int main(int argc, const char * argv[])
   return 0;
 }
 
-void usage(const char * __restrict format, ...)
-{
-  const char* basename = strrchr(progname, '/');
+void usage(const char *__restrict format, ...) {
+  const char *basename = strrchr(progname, '/');
   if (basename)
     basename++;
   else
     basename = progname;
-  
+
   va_list args;
   va_start(args, format);
-  
+
   if (format) {
     fprintf(stderr, "error: ");
-    vfprintf(stderr, format, args);;
+    vfprintf(stderr, format, args);
+    ;
     fprintf(stderr, "\n");
   }
-  
+
   va_end(args);
 
   fprintf(stderr, "usage: %s <file> ...\n", basename);

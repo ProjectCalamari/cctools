@@ -1,1 +1,1 @@
-void fooVers(void){}
+void fooVers(void) {}

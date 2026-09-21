@@ -4,23 +4,18 @@ int global_sym;
 
 extern int entry(void);
 
-static int private_sym(void)
-{
-  return 1;
-}
+static int private_sym(void) { return 1; }
 
 #ifdef DYLIB
-int entry(void)
-{
+int entry(void) {
 #else
-int main(void)
-{
-  global_sym = 
+int main(void) {
+  global_sym =
 #endif /* DYLIB */
 #ifdef DYLIB_CLIENT
-    entry();
+  entry();
 #else
-    private_sym();
+      private_sym();
 #endif /* DYLIB_CLIENT */
   return 0;
 }

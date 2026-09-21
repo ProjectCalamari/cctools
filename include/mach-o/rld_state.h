@@ -2,14 +2,14 @@
  * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 /*
@@ -51,21 +51,21 @@
  */
 
 struct rld_loaded_state {
-    char **object_filenames;	/* pointer to an array of file names loaded */
-    unsigned long		/*  in this set */
-	nobject_filenames;	/* number of file names loaded in this set */
-    struct mach_header		/* The address the set was link edited at */
-	*header_addr;
+  char **object_filenames; /* pointer to an array of file names loaded */
+  unsigned long            /*  in this set */
+      nobject_filenames;   /* number of file names loaded in this set */
+  struct mach_header       /* The address the set was link edited at */
+      *header_addr;
 };
 
-/* 
+/*
  * static unsigned long rld_nloaded_states = 0;
  * static struct rld_loaded_state *rld_loaded_state = NULL;
  *
  * static void rld_loaded_state_changed(void);
  */
-#define RLD_NLOADED_STATES	"rld_nloaded_states"
-#define RLD_LOADED_STATE	"rld_loaded_state"
+#define RLD_NLOADED_STATES "rld_nloaded_states"
+#define RLD_LOADED_STATE "rld_loaded_state"
 #define RLD_LOADED_STATE_CHANGED "rld_loaded_state_changed"
 
 #define RLD_DEBUG_OUTPUT_FILENAME ((char *)1)
@@ -77,7 +77,6 @@ struct rld_loaded_state {
  * and returns a pointer to the routine to get the rld loaded state so it can
  * be written in to the gmon.out file.
  */
-extern void (*moninitrld(
-    void (* monaddition)(char *lowpc, char *highpc)))
-	    (struct rld_loaded_state **rld_loaded_state,
-	     unsigned long *rld_nloaded_states);
+extern void (*moninitrld(void (*monaddition)(char *lowpc, char *highpc)))(
+    struct rld_loaded_state **rld_loaded_state,
+    unsigned long *rld_nloaded_states);

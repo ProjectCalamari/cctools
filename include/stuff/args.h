@@ -62,6 +62,6 @@
  * Also, it is not clear how the argv array and its contents should be freed
  * if the array is modified.
  */
-int args_expand_at(int* argc_p, char** argv_p[]);
+int args_expand_at(int *argc_p, char **argv_p[]);
 
 #endif /* args_h */

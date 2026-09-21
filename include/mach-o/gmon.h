@@ -2,14 +2,14 @@
  * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 /*	$OpenBSD: gmon.h,v 1.3 1996/04/21 22:31:46 deraadt Exp $	*/
@@ -64,12 +64,12 @@
 /*
  * Histogram counters are unsigned shorts (according to the kernel).
  */
-#define	HISTCOUNTER	unsigned short
+#define HISTCOUNTER unsigned short
 
 /*
  * Fraction of text space to allocate for histogram counters here, 1/2
  */
-#define	HISTFRACTION	2
+#define HISTFRACTION 2
 
 /*
  * Fraction of text space to allocate for from hash buckets.
@@ -84,7 +84,7 @@
  *	the shortest two call sequence is:
  * 		calls	$0,(r0)
  *		calls	$0,(r0)
- * 	which is separated by only three bytes, thus HASHFRACTION is 
+ * 	which is separated by only three bytes, thus HASHFRACTION is
  *	calculated as:
  *		HASHFRACTION = 3 / (2 * 2 - 1) = 1
  *
@@ -92,13 +92,13 @@
  *	the shortest two call sequence is:
  * 		jsr	a0
  *		jsr	a0
- * 	which is separated by only four bytes, thus HASHFRACTION is 
+ * 	which is separated by only four bytes, thus HASHFRACTION is
  *	calculated as:
  *		HASHFRACTION = 4 / (2 * 2 - 1) = 1
  *
  * For all RISC machines
  *	the shortest two call sequence is 2 32-bit instructions,
- * 	which is separated by only four bytes, thus HASHFRACTION is 
+ * 	which is separated by only four bytes, thus HASHFRACTION is
  *	calculated as:
  *		HASHFRACTION = 4 / (2 * 2 - 1) = 1
  *
@@ -106,7 +106,7 @@
  *	the shortest two call sequence is:
  * 		call	%eax
  *		call	%eax
- * 	which is separated by only two bytes, thus HASHFRACTION is 
+ * 	which is separated by only two bytes, thus HASHFRACTION is
  *	calculated as:
  *		HASHFRACTION = 2 / (2 * 2 - 1) = 0
  *	So on the i386 we use a HASHFRACTION of 1 instead and it can fail
@@ -117,13 +117,13 @@
  * Note that the division above rounds down, thus if MIN_SUBR_FRACTION
  * is less than three, this algorithm will not work!
  */
-#define	HASHFRACTION	1
+#define HASHFRACTION 1
 
 /*
  * percent of text space to allocate for tostructs with a minimum.
  */
-#define ARCDENSITY	4
-#define MINARCS		50
+#define ARCDENSITY 4
+#define MINARCS 50
 
 #ifndef ASSEMBLER
 /*
@@ -131,10 +131,10 @@
  * the recording of calls via mcount().
  */
 struct tostruct {
-    char		*selfpc;
-    long		count;
-    unsigned short	link;
-    unsigned short	order;
+  char *selfpc;
+  long count;
+  unsigned short link;
+  unsigned short order;
 };
 
 /*
@@ -144,10 +144,10 @@ struct tostruct {
  * header for ncnt - sizeof(struct phdr) bytes.
  */
 struct phdr {
-    char	*lpc; 	/* low program counter */
-    char	*hpc; 	/* high program counter */
-    int		ncnt;	/* number of bytes of histogram counters minius
-			   sizeof(struct phdr) that follow */
+  char *lpc; /* low program counter */
+  char *hpc; /* high program counter */
+  int ncnt;  /* number of bytes of histogram counters minius
+                sizeof(struct phdr) that follow */
 };
 
 /*
@@ -157,9 +157,9 @@ struct phdr {
  * counters to the end of the file.
  */
 struct rawarc {
-    unsigned long	raw_frompc;
-    unsigned long	raw_selfpc;
-    unsigned long	raw_count;
+  unsigned long raw_frompc;
+  unsigned long raw_selfpc;
+  unsigned long raw_count;
 };
 
 /*
@@ -170,60 +170,60 @@ struct rawarc {
  */
 #define GMON_MAGIC 0xbeefbabe
 struct gmon_data {
-    unsigned long type; /* constant for type of data following this struct */
-    unsigned long size; /* size in bytes of the data following this struct */
+  unsigned long type; /* constant for type of data following this struct */
+  unsigned long size; /* size in bytes of the data following this struct */
 };
 
 /*
  * The GMONTYPE_SAMPLES gmon_data.type is for the histogram counters described
  * above and has a struct phdr followed by the counters.
  */
-#define GMONTYPE_SAMPLES	1
+#define GMONTYPE_SAMPLES 1
 /*
  * The GMONTYPE_RAWARCS gmon_data.type is for the raw arcs described above.
  */
-#define GMONTYPE_RAWARCS	2
+#define GMONTYPE_RAWARCS 2
 /*
  * The GMONTYPE_ARCS_ORDERS gmon_data.type is for the raw arcs with a call
  * order field.  The order is the order is a sequence number for the order each
  * call site was executed.  Raw_order values start at 1 not zero.  Other than
  * the raw_order field this is the same information as in the struct rawarc.
  */
-#define GMONTYPE_ARCS_ORDERS	3
+#define GMONTYPE_ARCS_ORDERS 3
 struct rawarc_order {
-    unsigned long	raw_frompc;
-    unsigned long	raw_selfpc;
-    unsigned long	raw_count;
-    unsigned long	raw_order;
+  unsigned long raw_frompc;
+  unsigned long raw_selfpc;
+  unsigned long raw_count;
+  unsigned long raw_order;
 };
 /*
  * The GMONTYPE_RLD_STATE gmon_data.type is for the rld_load()'ed state of the
  * program.
  * The informations starts with an unsigned long with the count of states:
  *	rld_nloaded_states
- * Then each state follows in the file.  The state is made up of 
+ * Then each state follows in the file.  The state is made up of
  *	header_addr (where rld loaded this set of objects)
  *	nobjectfiles (the number of objects in this set)
  *		offsets into the string table (one for each object in the set)
  *	nbytes of string table
  *		the file name strings null terminated.
  */
-#define GMONTYPE_RLD_STATE	4
+#define GMONTYPE_RLD_STATE 4
 /*
  * The GMONTYPE_DYLD_STATE gmon_data.type is for the dynamic link editor state
  * of the program.
  * The informations starts with an unsigned long with the count of states:
  *      image_count
- * Then each state follows in the file.  The state is made up of 
+ * Then each state follows in the file.  The state is made up of
  *      image_header (the address where dyld loaded this image)
  *      vmaddr_slide (the amount dyld slid this image from it's vmaddress)
  *      name (the file name dyld loaded this image from)
  */
-#define GMONTYPE_DYLD_STATE     5
+#define GMONTYPE_DYLD_STATE 5
 #endif /* !ASSEMBLER */
 
 /*
  * general rounding functions.
  */
-#define ROUNDDOWN(x,y)	(((x)/(y))*(y))
-#define ROUNDUP(x,y)	((((x)+(y)-1)/(y))*(y))
+#define ROUNDDOWN(x, y) (((x) / (y)) * (y))
+#define ROUNDUP(x, y) ((((x) + (y) - 1) / (y)) * (y))

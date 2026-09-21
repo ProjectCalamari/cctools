@@ -14,8 +14,7 @@ extern void qtPath(void);
 extern void foo_bar(void);
 extern void foo_barSuffix(void);
 
-int
-main(){
+int main() {
   foo();
   fooSuffix();
   fooPath();

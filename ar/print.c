@@ -2,14 +2,14 @@
  * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 /*	$OpenBSD: print.c,v 1.2 1996/06/26 05:31:22 deraadt Exp $	*/
@@ -81,38 +81,37 @@ static char rcsid[] = "$OpenBSD: print.c,v 1.2 1996/06/26 05:31:22 deraadt Exp $
  *	Prints archive members on stdout - if member names given only
  *	print those members, otherwise print all members.
  */
-int
-print(argv)
-	char **argv;
+int print(argv)
+char **argv;
 {
-	CF cf;
-	int afd, all;
-	char *file;
+  CF cf;
+  int afd, all;
+  char *file;
 
-	afd = open_archive(O_RDONLY);
+  afd = open_archive(O_RDONLY);
 
-	/* Read from an archive, write to stdout; pad on read. */
-	SETCF(afd, archive, STDOUT_FILENO, "stdout", RPAD);
-	for (all = !*argv; get_arobj(afd);) {
-		if (all)
-			file = chdr.name;
-		else if (!(file = files(argv))) {
-			skip_arobj(afd);
-			continue;
-		}
-		if (options & AR_V) {
-			(void)printf("\n<%s>\n\n", file);
-			(void)fflush(stdout);
-		}
-		copy_ar(&cf, chdr.size);
-		if (!all && !*argv)
-			break;
-	}
-	close_archive(afd);
+  /* Read from an archive, write to stdout; pad on read. */
+  SETCF(afd, archive, STDOUT_FILENO, "stdout", RPAD);
+  for (all = !*argv; get_arobj(afd);) {
+    if (all)
+      file = chdr.name;
+    else if (!(file = files(argv))) {
+      skip_arobj(afd);
+      continue;
+    }
+    if (options & AR_V) {
+      (void)printf("\n<%s>\n\n", file);
+      (void)fflush(stdout);
+    }
+    copy_ar(&cf, chdr.size);
+    if (!all && !*argv)
+      break;
+  }
+  close_archive(afd);
 
-	if (*argv) {
-		orphans(argv);
-		return (1);
-	}
-	return (0);
+  if (*argv) {
+    orphans(argv);
+    return (1);
+  }
+  return (0);
 }

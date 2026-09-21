@@ -6,23 +6,22 @@
  */
 #include <stdint.h>
 
- 
 /*
  * 6.1.1 Debug Directory (Image Only)
  * Image files contain an optional debug directory that indicates what form of
  * debug information is present and where it is. This directory consists of an
  * array of debug directory entries whose location and size are indicated in
  * the image optional header.
- * 
+ *
  * The debug directory can be in a discardable .debug section (if one exists),
  * or it can be included in any other section in the image file, or not be in
  * a section at all.
- * 
+ *
  * Each debug directory entry identifies the location and size of a block of
- * debug information. The specified RVA can be zero if the debug information is 
+ * debug information. The specified RVA can be zero if the debug information is
  * not covered by a section header (that is, it resides in the image file and
  * is not mapped into the run-time address space). If it is mapped, the RVA is
- * its address. 
+ * its address.
  *
  * A debug directory entry has the following format:
  * Offset	Size	Field		Description
@@ -44,14 +43,14 @@
  * 24		4	PointerToRawData The file pointer to the debug data.
  */
 struct debug_directory_entry {
-    uint32_t	Characteristics;
-    uint32_t	TimeDateStamp;
-    uint16_t	MajorVersion;
-    uint16_t	MinorVersion;
-    uint32_t	Type;
-    uint32_t	SizeOfData;
-    uint32_t	AddressOfRawData;
-    uint32_t	PointerToRawData;
+  uint32_t Characteristics;
+  uint32_t TimeDateStamp;
+  uint16_t MajorVersion;
+  uint16_t MinorVersion;
+  uint32_t Type;
+  uint32_t SizeOfData;
+  uint32_t AddressOfRawData;
+  uint32_t PointerToRawData;
 };
 
 /*
@@ -65,10 +64,10 @@ struct debug_directory_entry {
  * argument file passed to the motc(1) command.
  */
 struct mtoc_debug_info {
-    uint32_t	Signature;	/* this is be 'MTOC' or 0x434f544d */
-    uint8_t     uuid[16];       /* the 128-bit uuid from the LC_UUID command */
-    /* argument of the -d mtoc(1) command follows directly after */
+  uint32_t Signature; /* this is be 'MTOC' or 0x434f544d */
+  uint8_t uuid[16];   /* the 128-bit uuid from the LC_UUID command */
+  /* argument of the -d mtoc(1) command follows directly after */
 };
-#define MTOC_SIGNATURE	0x434f544d /* the value of the characters 'MTOC' */
+#define MTOC_SIGNATURE 0x434f544d /* the value of the characters 'MTOC' */
 
 #endif /* _EFI_DEBUG_DIRECTORY_H_ */

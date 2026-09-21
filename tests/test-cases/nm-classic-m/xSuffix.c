@@ -1,1 +1,1 @@
-void xSuffix(void){}
+void xSuffix(void) {}

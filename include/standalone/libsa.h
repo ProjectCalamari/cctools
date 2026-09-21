@@ -2,14 +2,14 @@
  * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 /* Exported API for standalone library */
@@ -36,7 +36,8 @@ extern char *bcopy(char *src, char *dst, int n);
 #endif
 #endif
 
-extern void *bsearch(const void *key, const void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *));
+extern void *bsearch(const void *key, const void *base, size_t nmemb,
+                     size_t size, int (*compar)(const void *, const void *));
 #ifndef bzero
 #ifdef __OPENSTEP__
 extern int bzero(char *b, int length);
@@ -52,8 +53,8 @@ extern void *memset(void *s, int c, size_t n);
  */
 
 extern int errno;
-extern struct segment_command *
-  getsegbynamefromheader(struct mach_header *mhp, char *segname);
+extern struct segment_command *getsegbynamefromheader(struct mach_header *mhp,
+                                                      char *segname);
 extern int ptol(char *str);
 
 /* setjmp/longjmp:
@@ -72,16 +73,9 @@ extern char *strcpy(char *s1, const char *s2);
 char *strerror(int errnum);
 extern int strncmp(const char *s1, const char *s2, size_t n);
 extern char *strncpy(char *s1, const char *s2, size_t n);
-extern long strtol(
-    const char *nptr,
-    char **endptr,
-    register int base
-);
-extern unsigned long strtoul(
-    const char *nptr,
-    char **endptr,
-    register int base
-);
+extern long strtol(const char *nptr, char **endptr, register int base);
+extern unsigned long strtoul(const char *nptr, char **endptr,
+                             register int base);
 
 #if !(defined(KLD) && defined(__STATIC__))
 /* Mach */
@@ -90,23 +84,13 @@ extern mach_port_t task_self_;
 #else
 extern port_t task_self_;
 #endif
-extern kern_return_t vm_allocate(
-    mach_port_t target_task,
-    vm_address_t *address,
-    vm_size_t size,
-    boolean_t anywhere
-);
-extern kern_return_t vm_deallocate(
-    mach_port_t target_task,
-    vm_address_t address,
-    vm_size_t size
-);
-extern kern_return_t host_info(
-    mach_port_t host,
-    int flavor,
-    host_info_t host_info,
-    unsigned int *host_info_count
-);
+extern kern_return_t vm_allocate(mach_port_t target_task, vm_address_t *address,
+                                 vm_size_t size, boolean_t anywhere);
+extern kern_return_t vm_deallocate(mach_port_t target_task,
+                                   vm_address_t address, vm_size_t size);
+extern kern_return_t host_info(mach_port_t host, int flavor,
+                               host_info_t host_info,
+                               unsigned int *host_info_count);
 extern vm_size_t vm_page_size;
 extern mach_port_t host_self(void);
 extern int getpagesize(void);
@@ -114,11 +98,11 @@ extern char *mach_error_string(int errnum);
 
 /* Malloc/Zalloc */
 extern int malloc_init(char *start, int size, int nodes);
-extern char * zalloc(int size);
+extern char *zalloc(int size);
 extern int zfree(char *start);
 extern int zinit(char *start, int size, int nodes);
-#define ZALLOC_NODES	64	/* default number of nodes */
-#endif /* !(defined(KLD) && defined(__STATIC__)) */
+#define ZALLOC_NODES 64 /* default number of nodes */
+#endif                  /* !(defined(KLD) && defined(__STATIC__)) */
 extern void *malloc(size_t size);
 extern void free(void *start);
 extern void *realloc(void *ptr, size_t size);

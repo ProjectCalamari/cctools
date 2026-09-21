@@ -57,26 +57,25 @@ enum expand_result {
  */
 struct string_list {
   int nstr;
-  char** strs;
+  char **strs;
 };
 
 static enum expand_result expand_at(struct string_list *args,
-struct string_list* at_paths, int *hint_p);
+                                    struct string_list *at_paths, int *hint_p);
 
-static char* get_option(char** buf);
+static char *get_option(char **buf);
 
-static void string_list_add(struct string_list* list, const char* str);
-static void string_list_add_argv(struct string_list* list, int argc,
-char** argv);
-static int string_list_find(const struct string_list* list, const char* str);
-static void string_list_dest(struct string_list* list);
+static void string_list_add(struct string_list *list, const char *str);
+static void string_list_add_argv(struct string_list *list, int argc,
+                                 char **argv);
+static int string_list_find(const struct string_list *list, const char *str);
+static void string_list_dest(struct string_list *list);
 
 /*
  * args_expand_at() recursively expands "@file" options as they appear in the
  * argc/argv options list.
  */
-int args_expand_at(int* argc_p, char** argv_p[])
-{
+int args_expand_at(int *argc_p, char **argv_p[]) {
   int hint = 0;
   enum expand_result result = EXPAND_CONTINUE;
   struct string_list at_paths = {0};
@@ -100,11 +99,11 @@ int args_expand_at(int* argc_p, char** argv_p[])
 
   // return the modified values, adding a NULL terminator to the string list
   if (result == EXPAND_COMPLETE) {
-    args.strs = reallocf(args.strs, sizeof(char*) * (args.nstr + 1));
+    args.strs = reallocf(args.strs, sizeof(char *) * (args.nstr + 1));
     if (!args.strs)
       system_fatal("reallocf failed");
     args.strs[args.nstr] = NULL;
-    
+
     *argc_p = args.nstr;
     *argv_p = args.strs;
   }
@@ -159,17 +158,16 @@ int args_expand_at(int* argc_p, char** argv_p[])
  *   }
  */
 enum expand_result expand_at(struct string_list *args,
-struct string_list* at_paths, int *hint_p)
-{
+                             struct string_list *at_paths, int *hint_p) {
   int argc = args->nstr;
-  char** argv = args->strs;
+  char **argv = args->strs;
   int hint = hint_p ? *hint_p : 0;
   struct string_list newargs = {0};
   enum expand_result result = EXPAND_COMPLETE;
 
   for (int i = hint; i < argc; ++i) {
     if ('@' == argv[i][0]) {
-      char* at_path = &(argv[i][1]);
+      char *at_path = &(argv[i][1]);
 
       // error if we have seen this path before.
       if (at_paths && -1 != string_list_find(at_paths, at_path)) {
@@ -206,10 +204,10 @@ struct string_list* at_paths, int *hint_p)
         return EXPAND_ERROR;
       }
 
-      char* addr = NULL;
+      char *addr = NULL;
       size_t mapped_size = sb.st_size + 1;
       if (sb.st_size) {
-        addr = (char*)malloc(mapped_size);
+        addr = (char *)malloc(mapped_size);
         if (!addr) {
           fprintf(stderr, "error: can't malloc %s: %s\n", at_path,
                   strerror(errno));
@@ -217,9 +215,10 @@ struct string_list* at_paths, int *hint_p)
           return EXPAND_ERROR;
         }
       }
-      
-      if ( read(fd, addr, sb.st_size) != sb.st_size ) {
-        fprintf(stderr, "can't read the content of %s: %s\n", at_path, strerror(errno));
+
+      if (read(fd, addr, sb.st_size) != sb.st_size) {
+        fprintf(stderr, "can't read the content of %s: %s\n", at_path,
+                strerror(errno));
         return EXPAND_ERROR;
       }
 
@@ -244,8 +243,8 @@ struct string_list* at_paths, int *hint_p)
       // copy the strings in from the at file. If we see another at symbol
       // set result to EXPAND_CONTINUE to request additional expansion.
       if (addr) {
-        char* p = addr;
-        for (char* arg = get_option(&p); arg; arg = get_option(&p)) {
+        char *p = addr;
+        for (char *arg = get_option(&p); arg; arg = get_option(&p)) {
           string_list_add(&newargs, arg);
           if ('@' == arg[0])
             result = EXPAND_CONTINUE;
@@ -256,8 +255,7 @@ struct string_list* at_paths, int *hint_p)
       if (addr) {
         free(addr);
       }
-    }
-    else { // if ('@' != argv[i][0])
+    } else { // if ('@' != argv[i][0])
       // add this literal option if necessary.
       if (newargs.nstr) {
         string_list_add(&newargs, argv[i]);
@@ -305,10 +303,9 @@ struct string_list* at_paths, int *hint_p)
  * "one" and "two". This is consistent with unix shell behavior, but not
  * consistent with some implementations of the @file command line option.
  */
-static char* get_option(char** buf)
-{
-  char* p = NULL; // beginning of option
-  char* q = NULL; // end of option
+static char *get_option(char **buf) {
+  char *p = NULL; // beginning of option
+  char *q = NULL; // end of option
 
   while (buf && *buf && *(*buf)) {
     char c = *(*buf);
@@ -359,8 +356,7 @@ static char* get_option(char** buf)
             *q++ = *(*buf);
             (*buf)++;
           }
-        }
-        else {
+        } else {
           // include this character in the option.
           *q++ = *(*buf);
           (*buf)++;
@@ -391,9 +387,8 @@ static char* get_option(char** buf)
 /*
  * string_list_add() adds a string to the list.
  */
-static void string_list_add(struct string_list* list, const char* str)
-{
-  list->strs = reallocf(list->strs, sizeof(char*) * (list->nstr + 1));
+static void string_list_add(struct string_list *list, const char *str) {
+  list->strs = reallocf(list->strs, sizeof(char *) * (list->nstr + 1));
   if (!list->strs) {
     system_fatal("reallocf failed");
   }
@@ -403,10 +398,9 @@ static void string_list_add(struct string_list* list, const char* str)
 /*
  * string_list_add_argv() adds an array of strings to the string list.
  */
-static void string_list_add_argv(struct string_list* list, int argc,
-char* argv[])
-{
-  list->strs = reallocf(list->strs, sizeof(char*) * (list->nstr + argc));
+static void string_list_add_argv(struct string_list *list, int argc,
+                                 char *argv[]) {
+  list->strs = reallocf(list->strs, sizeof(char *) * (list->nstr + argc));
   if (!list->strs) {
     system_fatal("reallocf failed");
   }
@@ -419,8 +413,7 @@ char* argv[])
  * string_list_find() returns the index of str in the string list, or -1 if
  * the string is not found.
  */
-static int string_list_find(const struct string_list* list, const char* str)
-{
+static int string_list_find(const struct string_list *list, const char *str) {
   for (int i = 0; i < list->nstr; ++i) {
     if (0 == strcmp(str, list->strs[i]))
       return i;
@@ -436,8 +429,7 @@ static int string_list_find(const struct string_list* list, const char* str)
  * BUG: this function is not called string_list_free() because that might
  * imply it also frees the struct string_list, which it does not.
  */
-static void string_list_dest(struct string_list* list)
-{
+static void string_list_dest(struct string_list *list) {
   for (int i = 0; i < list->nstr; ++i) {
     free(list->strs[i]);
   }

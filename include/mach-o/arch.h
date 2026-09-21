@@ -2,14 +2,14 @@
  * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 #ifndef _MACH_O_ARCH_H_
@@ -29,15 +29,19 @@
  *
  */
 
-#include <stdint.h>
-#include <mach/machine.h>
-#include <architecture/byte_order.h>
 #include <Availability.h>
 #include <TargetConditionals.h>
+#include <architecture/byte_order.h>
+#include <mach/machine.h>
+#include <stdint.h>
 
 #ifndef __CCTOOLS_DEPRECATED
-    #define __CCTOOLS_DEPRECATED            __API_DEPRECATED("No longer supported", macos(10.0, 13.0), ios(1.0, 16.0), watchos(1.0, 8.0), tvos(1.0, 16.0))
-    #define __CCTOOLS_DEPRECATED_MSG(_msg)  __API_DEPRECATED_WITH_REPLACEMENT(_msg, macos(10.0, 13.0), ios(1.0, 16.0), watchos(1.0, 8.0), tvos(1.0, 16.0))
+#define __CCTOOLS_DEPRECATED                                                   \
+  __API_DEPRECATED("No longer supported", macos(10.0, 13.0), ios(1.0, 16.0),   \
+                   watchos(1.0, 8.0), tvos(1.0, 16.0))
+#define __CCTOOLS_DEPRECATED_MSG(_msg)                                         \
+  __API_DEPRECATED_WITH_REPLACEMENT(_msg, macos(10.0, 13.0), ios(1.0, 16.0),   \
+                                    watchos(1.0, 8.0), tvos(1.0, 16.0))
 #endif
 
 /* The NXArchInfo structs contain the architectures symbolic name
@@ -48,12 +52,12 @@
  * well as generic "family" entries (such as ppc).
  */
 
-struct NXArchInfo  {
-    const char *name;
-    cpu_type_t cputype;
-    cpu_subtype_t cpusubtype;
-    enum NXByteOrder byteorder;
-    const char *description;
+struct NXArchInfo {
+  const char *name;
+  cpu_type_t cputype;
+  cpu_subtype_t cpusubtype;
+  enum NXByteOrder byteorder;
+  const char *description;
 } __CCTOOLS_DEPRECATED;
 typedef struct NXArchInfo NXArchInfo __CCTOOLS_DEPRECATED;
 
@@ -67,9 +71,10 @@ extern "C" {
 extern const NXArchInfo *NXGetAllArchInfos(void) __CCTOOLS_DEPRECATED;
 
 /* NXGetLocalArchInfo() returns the NXArchInfo for the local host, or NULL
- * if none is known. 
+ * if none is known.
  */
-extern const NXArchInfo *NXGetLocalArchInfo(void) __CCTOOLS_DEPRECATED_MSG("use macho_arch_name_for_mach_header()");
+extern const NXArchInfo *NXGetLocalArchInfo(void)
+    __CCTOOLS_DEPRECATED_MSG("use macho_arch_name_for_mach_header()");
 
 /* NXGetArchInfoFromName() and NXGetArchInfoFromCpuType() return the
  * NXArchInfo from the architecture's name or cputype/cpusubtype
@@ -77,9 +82,11 @@ extern const NXArchInfo *NXGetLocalArchInfo(void) __CCTOOLS_DEPRECATED_MSG("use 
  * to request the most general NXArchInfo known for the given cputype.
  * NULL is returned if no matching NXArchInfo can be found.
  */
-extern const NXArchInfo *NXGetArchInfoFromName(const char *name) __CCTOOLS_DEPRECATED_MSG("use macho_cpu_type_for_arch_name()");
+extern const NXArchInfo *NXGetArchInfoFromName(const char *name)
+    __CCTOOLS_DEPRECATED_MSG("use macho_cpu_type_for_arch_name()");
 extern const NXArchInfo *NXGetArchInfoFromCpuType(cpu_type_t cputype,
-						  cpu_subtype_t cpusubtype) __CCTOOLS_DEPRECATED_MSG("use macho_arch_name_for_cpu_type()");
+                                                  cpu_subtype_t cpusubtype)
+    __CCTOOLS_DEPRECATED_MSG("use macho_arch_name_for_cpu_type()");
 
 /* The above interfaces that return pointers to NXArchInfo structs in normal
  * cases returns a pointer from the array returned in NXGetAllArchInfos().
@@ -91,7 +98,8 @@ extern const NXArchInfo *NXGetArchInfoFromCpuType(cpu_type_t cputype,
  * code below.  Going forward the above interfaces will only return pointers
  * from the array returned in NXGetAllArchInfos().
  */
-extern void NXFreeArchInfo(const NXArchInfo *x) __CCTOOLS_DEPRECATED_MSG("NXArchInfo is deprecated");
+extern void NXFreeArchInfo(const NXArchInfo *x)
+    __CCTOOLS_DEPRECATED_MSG("NXArchInfo is deprecated");
 
 /* The code that can be used for NXFreeArchInfo() when it is not available is:
  *
@@ -99,7 +107,7 @@ extern void NXFreeArchInfo(const NXArchInfo *x) __CCTOOLS_DEPRECATED_MSG("NXArch
  *	const NXArchInfo *x)
  *	{
  *	    const NXArchInfo *p;
- *	
+ *
  *	        p = NXGetAllArchInfos();
  *	        while(p->name != NULL){
  *	            if(x == p)
@@ -120,10 +128,10 @@ extern void NXFreeArchInfo(const NXArchInfo *x) __CCTOOLS_DEPRECATED_MSG("NXArch
  * routine is used.  But if there is an exact match between the cputype and
  * cpusubtype and one of the fat_arch structs this routine will always succeed.
  */
-extern struct fat_arch *NXFindBestFatArch(cpu_type_t cputype,
-					  cpu_subtype_t cpusubtype,
-					  struct fat_arch *fat_archs,
-					  uint32_t nfat_archs) __CCTOOLS_DEPRECATED_MSG("use macho_best_slice()");
+extern struct fat_arch *
+NXFindBestFatArch(cpu_type_t cputype, cpu_subtype_t cpusubtype,
+                  struct fat_arch *fat_archs, uint32_t nfat_archs)
+    __CCTOOLS_DEPRECATED_MSG("use macho_best_slice()");
 
 /* NXFindBestFatArch_64() is passed a cputype and cpusubtype and a set of
  * fat_arch_64 structs and selects the best one that matches (if any) and
@@ -135,10 +143,10 @@ extern struct fat_arch *NXFindBestFatArch(cpu_type_t cputype,
  * cputype and cpusubtype and one of the fat_arch_64 structs this routine will
  * always succeed.
  */
-extern struct fat_arch_64 *NXFindBestFatArch_64(cpu_type_t cputype,
-					        cpu_subtype_t cpusubtype,
-					        struct fat_arch_64 *fat_archs64,
-					        uint32_t nfat_archs) __CCTOOLS_DEPRECATED_MSG("use macho_best_slice()");
+extern struct fat_arch_64 *
+NXFindBestFatArch_64(cpu_type_t cputype, cpu_subtype_t cpusubtype,
+                     struct fat_arch_64 *fat_archs64, uint32_t nfat_archs)
+    __CCTOOLS_DEPRECATED_MSG("use macho_best_slice()");
 
 /* NXCombineCpuSubtypes() returns the resulting cpusubtype when combining two
  * different cpusubtypes for the specified cputype.  If the two cpusubtypes
@@ -149,8 +157,9 @@ extern struct fat_arch_64 *NXFindBestFatArch_64(cpu_type_t cputype,
  * be combined and this routine will return the cpusubtype pass in.
  */
 extern cpu_subtype_t NXCombineCpuSubtypes(cpu_type_t cputype,
-					  cpu_subtype_t cpusubtype1,
-					  cpu_subtype_t cpusubtype2) __CCTOOLS_DEPRECATED_MSG("cpu subtypes are no longer combinable");
+                                          cpu_subtype_t cpusubtype1,
+                                          cpu_subtype_t cpusubtype2)
+    __CCTOOLS_DEPRECATED_MSG("cpu subtypes are no longer combinable");
 
 #ifdef __cplusplus
 }

@@ -2,14 +2,14 @@
  * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 /*	$OpenBSD: append.c,v 1.2 1996/06/26 05:31:16 deraadt Exp $	*/
@@ -69,12 +69,12 @@ static char rcsid[] = "$OpenBSD: append.c,v 1.2 1996/06/26 05:31:16 deraadt Exp 
 #include <sys/param.h>
 #include <sys/stat.h>
 
+#include <dirent.h>
 #include <err.h>
 #include <fcntl.h>
-#include <unistd.h>
-#include <dirent.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "archive.h"
 #include "extern.h"
@@ -84,34 +84,33 @@ static char rcsid[] = "$OpenBSD: append.c,v 1.2 1996/06/26 05:31:16 deraadt Exp 
  *	Append files to the archive - modifies original archive or creates
  *	a new archive if named archive does not exist.
  */
-int
-append(argv)
-	char **argv;
+int append(argv)
+char **argv;
 {
-	int afd, fd, eval;
-	char *file;
-	CF cf;
-	struct stat sb;
+  int afd, fd, eval;
+  char *file;
+  CF cf;
+  struct stat sb;
 
-	afd = open_archive(O_CREAT|O_RDWR);
-	if (lseek(afd, (off_t)0, SEEK_END) == (off_t)-1)
-		error(archive);
+  afd = open_archive(O_CREAT | O_RDWR);
+  if (lseek(afd, (off_t)0, SEEK_END) == (off_t)-1)
+    error(archive);
 
-	/* Read from disk, write to an archive; pad on write. */
-	SETCF(0, 0, afd, archive, WPAD);
-	for (eval = 0; (file = *argv++);) {
-		if ((fd = open(file, O_RDONLY)) < 0) {
-			warn("%s", file);
-			eval = 1;
-			continue;
-		}
-		if (options & AR_V)
-			(void)printf("q - %s\n", file);
-		cf.rfd = fd;
-		cf.rname = file;
-		put_arobj(&cf, &sb);
-		(void)close(fd);
-	}
-	close_archive(afd);
-	return (eval);	
+  /* Read from disk, write to an archive; pad on write. */
+  SETCF(0, 0, afd, archive, WPAD);
+  for (eval = 0; (file = *argv++);) {
+    if ((fd = open(file, O_RDONLY)) < 0) {
+      warn("%s", file);
+      eval = 1;
+      continue;
+    }
+    if (options & AR_V)
+      (void)printf("q - %s\n", file);
+    cf.rfd = fd;
+    cf.rname = file;
+    put_arobj(&cf, &sb);
+    (void)close(fd);
+  }
+  close_archive(afd);
+  return (eval);
 }

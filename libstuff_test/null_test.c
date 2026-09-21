@@ -7,12 +7,8 @@
 
 #include "test_main.h"
 
-static void test_null(void)
-{
-  ;
-}
+static void test_null(void) { ; }
 
-int test_main(void)
-{
+int test_main(void) {
   return test_add("test harness initialization", test_null);
 }

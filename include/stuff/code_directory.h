@@ -40,7 +40,7 @@ struct codedir;
  * returns 1 if it contains a valid ad-hoc signature signed by ld(1), and 0 if
  * it contains a valid signature written by codesign(1) or an invalid signature.
  */
-int codedir_is_linker_signed(const char* data, uint32_t size);
+int codedir_is_linker_signed(const char *data, uint32_t size);
 
 /*
  * codedir_create() builds an object for measuring a Mach-O binary and writing
@@ -55,12 +55,9 @@ int codedir_is_linker_signed(const char* data, uint32_t size);
  *
  * codedir_create() returns NULL on error.
  */
-__private_extern__
-struct codedir* codedir_create(const char* output_path,
-                               uint32_t filesize,
-                               uint32_t ptralign,
-                               uint32_t platform,
-                               uint32_t minos);
+__private_extern__ struct codedir *
+codedir_create(const char *output_path, uint32_t filesize, uint32_t ptralign,
+               uint32_t platform, uint32_t minos);
 
 /*
  * codedir_create_object() initializes a codedir struct from an existing
@@ -75,39 +72,35 @@ struct codedir* codedir_create(const char* output_path,
  *
  * codedir_create() returns 0 on success or -1 on error
  */
-__private_extern__
-int codedir_create_object(const char* output_path,
-                                       char* object_addr,
-                                       uint32_t object_size,
-                                       struct codedir** out_codedir);
+__private_extern__ int codedir_create_object(const char *output_path,
+                                             char *object_addr,
+                                             uint32_t object_size,
+                                             struct codedir **out_codedir);
 /*
  * codedir_free() releases memory held by struct codedir.
  */
-__private_extern__
-void codedir_free(struct codedir* codedir);
+__private_extern__ void codedir_free(struct codedir *codedir);
 
 /*
  * codedir_filesize() returns the size of the Mach-O being measured, not
  * including the size of the LC_CODE_SIGNATURE payload. In other words, this
  * value is also the location of the LC_CODE_SIGNATURE payload.
  */
-__private_extern__
-uint32_t codedir_filesize(const struct codedir* codedir);
+__private_extern__ uint32_t codedir_filesize(const struct codedir *codedir);
 
 /*
  * codedir_datasize() returns the size required to hold the LC_CODE_SIGNATURE
  * payload.
  */
-__private_extern__
-uint32_t codedir_datasize(const struct codedir* codedir);
+__private_extern__ uint32_t codedir_datasize(const struct codedir *codedir);
 
 /*
  * codedir_datasize_delta() returns the difference in size between the old
  * and new LC_CODE_SIGNATURE payloads if this struct codedir was created
  * via codedir_create_object(). Otherwise, will return codedir_datasize().
  */
-__private_extern__
-int32_t codedir_datasize_delta(const struct codedir* codedir);
+__private_extern__ int32_t
+codedir_datasize_delta(const struct codedir *codedir);
 
 /*
  * codedir_write() writes a new LC_CODE_SIGNATURE payload. 'input' must point
@@ -122,11 +115,9 @@ int32_t codedir_datasize_delta(const struct codedir* codedir);
  *
  * codedir_write() returns 0 on success, -1 on error.
  */
-__private_extern__
-int codedir_write(const struct codedir* codedir,
-                  const char* input,
-                  char* output,
-                  uint32_t output_size);
+__private_extern__ int codedir_write(const struct codedir *codedir,
+                                     const char *input, char *output,
+                                     uint32_t output_size);
 
 /*
  * codedir_write_object() computes the LC_CODE_SIGNATURE payload for a whole
@@ -138,10 +129,9 @@ int codedir_write(const struct codedir* codedir,
  *
  * codedir_write_object() returns 0 on success, -1 on error.
  */
-__private_extern__
-int codedir_write_object(const struct codedir* codedir,
-                         char* object_addr,
-                         uint32_t object_size);
+__private_extern__ int codedir_write_object(const struct codedir *codedir,
+                                            char *object_addr,
+                                            uint32_t object_size);
 
 #endif /* CODEDIRECTORY_SUPPORT */
 #endif /* code_directory_h */

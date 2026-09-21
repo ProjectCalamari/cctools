@@ -2,14 +2,14 @@
  * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 /*	$OpenBSD: vax.h,v 1.2 1996/06/26 05:34:03 deraadt Exp $	*/
@@ -57,33 +57,49 @@
  *
  *	@(#)vax.h	8.1 (Berkeley) 6/6/93
  */
-    /*
-     *	opcode of the `calls' instruction
-     */
-#define	CALLS	0xfb
+/*
+ *	opcode of the `calls' instruction
+ */
+#define CALLS 0xfb
 
-    /*
-     *	offset (in bytes) of the code from the entry address of a routine.
-     *	(see asgnsamples for use and explanation.)
-     */
-#define OFFSET_OF_CODE	2
-#define	UNITS_TO_CODE	(OFFSET_OF_CODE / sizeof(UNIT))
+/*
+ *	offset (in bytes) of the code from the entry address of a routine.
+ *	(see asgnsamples for use and explanation.)
+ */
+#define OFFSET_OF_CODE 2
+#define UNITS_TO_CODE (OFFSET_OF_CODE / sizeof(UNIT))
 
-    /*
-     *	register for pc relative addressing
-     */
-#define	PC	0xf
+/*
+ *	register for pc relative addressing
+ */
+#define PC 0xf
 
 enum opermodes {
-    literal, indexed, reg, regdef, autodec, autoinc, autoincdef, 
-    bytedisp, bytedispdef, worddisp, worddispdef, longdisp, longdispdef,
-    immediate, absolute, byterel, bytereldef, wordrel, wordreldef,
-    longrel, longreldef
+  literal,
+  indexed,
+  reg,
+  regdef,
+  autodec,
+  autoinc,
+  autoincdef,
+  bytedisp,
+  bytedispdef,
+  worddisp,
+  worddispdef,
+  longdisp,
+  longdispdef,
+  immediate,
+  absolute,
+  byterel,
+  bytereldef,
+  wordrel,
+  wordreldef,
+  longrel,
+  longreldef
 };
-typedef enum opermodes	operandenum;
+typedef enum opermodes operandenum;
 
 struct modebyte {
-    unsigned int	regfield:4;
-    unsigned int	modefield:4;
+  unsigned int regfield : 4;
+  unsigned int modefield : 4;
 };
-

@@ -24,24 +24,23 @@
 #ifndef align_h
 #define align_h
 
-#include <mach-o/loader.h>
 #include "stuff/bool.h"
+#include <mach-o/loader.h>
 
 /* The maximum segment alignment allowed to be specified, as a power of two */
-#define MAXSEGALIGN         15 /* 2**15 or 0x8000 */
+#define MAXSEGALIGN 15 /* 2**15 or 0x8000 */
 
 /* The minimum segment alignment for Mach-O files, as a power of two */
-#define MINSEGALIGN32        2 /* 2**2 or sizeof(uint32_t) */
-#define MINSEGALIGN64        3 /* 2**3 or sizeof(uint64_t) */
+#define MINSEGALIGN32 2 /* 2**2 or sizeof(uint32_t) */
+#define MINSEGALIGN64 3 /* 2**3 or sizeof(uint64_t) */
 
 /*
  * guess_align is passed a vmaddr of a segment and guesses what the segment
  * alignment was.  It uses the most conservative guess within the minimum and
  * maximum values supplied.
  */
-__private_extern__
-uint32_t
-guess_align(uint64_t vmaddr, uint32_t min, uint32_t max);
+__private_extern__ uint32_t guess_align(uint64_t vmaddr, uint32_t min,
+                                        uint32_t max);
 
 /*
  * get_seg_align() returns the segment alignment for a Mach-O, as an exponent of
@@ -76,13 +75,10 @@ guess_align(uint64_t vmaddr, uint32_t min, uint32_t max);
  * The swap flag should be set to TRUE if the calling program has not yet
  * swapped the load commands. This flag really is unnecessary.)
  */
-__private_extern__
-uint32_t
-get_seg_align(struct mach_header *mhp,
-              struct mach_header_64 *mhp64,
-              struct load_command *load_commands,
-              enum bool swap_load_commands,
-              uint64_t size,
-              char *name);
+__private_extern__ uint32_t get_seg_align(struct mach_header *mhp,
+                                          struct mach_header_64 *mhp64,
+                                          struct load_command *load_commands,
+                                          enum bool swap_load_commands,
+                                          uint64_t size, char *name);
 
 #endif /* align_h */

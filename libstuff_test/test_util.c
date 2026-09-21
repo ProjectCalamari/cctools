@@ -13,23 +13,21 @@
 #include <string.h>
 #include <unistd.h>
 
-int test_write_tmp_data(const void* data, size_t size, char** name_p)
-{
+int test_write_tmp_data(const void *data, size_t size, char **name_p) {
   if (!data || !name_p) {
     errno = EINVAL;
     return -1;
   }
 
-  char* name = strdup("/tmp/libstuff_test.XXXXXX");
+  char *name = strdup("/tmp/libstuff_test.XXXXXX");
   int fd = mkstemp(name);
   if (-1 == fd) {
-    fprintf(stderr, "error: cannot make temporary file: %s\n",
-            strerror(errno));
+    fprintf(stderr, "error: cannot make temporary file: %s\n", strerror(errno));
     free(name);
     return -1;
   }
 
-  const unsigned char* uchars = (const unsigned char*)data;
+  const unsigned char *uchars = (const unsigned char *)data;
   while (size) {
     const size_t limit = 0x7FFFFFFF;
     size_t towrite = size < limit ? size : limit;
@@ -39,11 +37,9 @@ int test_write_tmp_data(const void* data, size_t size, char** name_p)
               strerror(errno));
       free(name);
       return -1;
-    }
-    else if (0 == wrote) {
+    } else if (0 == wrote) {
       break;
-    }
-    else {
+    } else {
       size -= wrote;
       uchars += wrote;
     }

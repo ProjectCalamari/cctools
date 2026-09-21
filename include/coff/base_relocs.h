@@ -6,12 +6,11 @@
  */
 #include <stdint.h>
 
- 
 /*
  * 6.6. The .reloc Section (Image Only)
  * The base relocation table contains entries for all base relocations in the
  * image.  (For PECOFF) The Base Relocation Table field in the optional header
- * data directories gives the number of bytes in the base relocation table. For 
+ * data directories gives the number of bytes in the base relocation table. For
  * more information, see section 3.4.3, "Optional Header Data Directories
  * (Image Only)."
  *
@@ -25,7 +24,7 @@
  * The loader is not required to process base relocations that are resolved by
  * the linker, unless the load image cannot be loaded at the image base that is
  * specified in the PE header.
- * 
+ *
  * 6.6.1. Base Relocation Block
  * Each base relocation block starts with the following structure:
  * Offset	Size	Field	Description
@@ -39,8 +38,8 @@
  *					Type/Offset fields that follow.
  */
 struct base_relocation_block_header {
-        uint32_t page_rva;
-        uint32_t block_size;
+  uint32_t page_rva;
+  uint32_t block_size;
 };
 
 /*
@@ -60,21 +59,22 @@ struct base_relocation_block_header {
  */
 struct base_relocation_entry {
 #if __BIG_ENDIAN__
-        uint16_t type:4,
-		 offset:12;
+  uint16_t type : 4, offset : 12;
 #else
-        uint16_t offset:12,
-		 type:4;
+  uint16_t offset : 12, type : 4;
 #endif
 };
 
-#define	IMAGE_REL_BASED_ABSOLUTE	0 /* The base relocation is skipped.
-					     This type can be used to pad a
-					     block. */
-#define IMAGE_REL_BASED_HIGHLOW		3 /* The base relocation applies all
-					     32 bits of the difference to the
-					     32-bit field at offset. */
-#define IMAGE_REL_BASED_DIR64	       10 /* The base relocation applies the
-					     difference to the 64-bit field at
-					     offset. */
+#define IMAGE_REL_BASED_ABSOLUTE                                               \
+  0 /* The base relocation is skipped.                                         \
+       This type can be used to pad a                                          \
+       block. */
+#define IMAGE_REL_BASED_HIGHLOW                                                \
+  3 /* The base relocation applies all                                         \
+       32 bits of the difference to the                                        \
+       32-bit field at offset. */
+#define IMAGE_REL_BASED_DIR64                                                  \
+  10   /* The base relocation applies the                                      \
+          difference to the 64-bit field at                                    \
+          offset. */
 #endif /* _EFI_BASE_RELOCS_H_ */

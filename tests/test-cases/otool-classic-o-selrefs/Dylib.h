@@ -2,8 +2,7 @@
 
 #import "Protocol.h"
 
-@interface Dylib : NSObject <Verbing>
-{
+@interface Dylib : NSObject <Verbing> {
   int m_intProperty;
 }
 - (void)genericMethod;

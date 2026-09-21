@@ -1,1 +1,1 @@
-void fooPathSuffix(void){}
+void fooPathSuffix(void) {}

@@ -2,14 +2,14 @@
  * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 /*	$OpenBSD: m68k.h,v 1.2 1996/06/26 05:33:54 deraadt Exp $	*/
@@ -57,15 +57,14 @@
  *
  *	@(#)hp300.h	8.1 (Berkeley) 6/6/93
  */
-    /*
-     *	offset (in bytes) of the code from the entry address of a routine.
-     *	(see asgnsamples for use and explanation.)
-     */
-#define OFFSET_OF_CODE	0
-#define	UNITS_TO_CODE	(OFFSET_OF_CODE / sizeof(UNIT))
+/*
+ *	offset (in bytes) of the code from the entry address of a routine.
+ *	(see asgnsamples for use and explanation.)
+ */
+#define OFFSET_OF_CODE 0
+#define UNITS_TO_CODE (OFFSET_OF_CODE / sizeof(UNIT))
 
-#define BSR_OP		0x6100
-#define BSR_MASK	0xff00
-#define JBSR_OP		0x4e80
-#define JBSR_MASK	0xffc0
-
+#define BSR_OP 0x6100
+#define BSR_MASK 0xff00
+#define JBSR_OP 0x4e80
+#define JBSR_MASK 0xffc0

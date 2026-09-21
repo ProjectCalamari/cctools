@@ -2,14 +2,14 @@
  * Copyright (c) 2003 Apple Computer, Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 /* GDB symbol table format definitions.
@@ -89,65 +89,61 @@ Format of a symbol segment:
    text, data and bss addresses by; databeg and bssbeg can be
    used to tell which kind of relocation an address needs.  */
 
-enum language {language_c};
+enum language { language_c };
 
 /*
  * All symbol roots must have as their first two fields format and length
  * fields.  The total length of the symbol root must be a multiple of
  * sizeof(uint32_t) and any padding must be zeroed.
  */
-struct symbol_root_header
-{
-  int format;	/* type of symbol segment */
-  int length;	/* # bytes in this symbol segment, rounded to sizeof(uint32_t) */
+struct symbol_root_header {
+  int format; /* type of symbol segment */
+  int length; /* # bytes in this symbol segment, rounded to sizeof(uint32_t) */
 };
 
 /*
  * Constants for symbol root format fields
  */
-#define SYMBOL_ROOT_FORMAT	1
-#define INDIRECT_ROOT_FORMAT	1002
-#define COMMON_ROOT_FORMAT	1003
-#define SHLIB_ROOT_FORMAT	1004
-#define ALIAS_ROOT_FORMAT	1005
-#define MACH_ROOT_FORMAT		2001
-#define MACH_INDIRECT_ROOT_FORMAT	2002
-#define MACH_SHLIB_ROOT_FORMAT		2004
+#define SYMBOL_ROOT_FORMAT 1
+#define INDIRECT_ROOT_FORMAT 1002
+#define COMMON_ROOT_FORMAT 1003
+#define SHLIB_ROOT_FORMAT 1004
+#define ALIAS_ROOT_FORMAT 1005
+#define MACH_ROOT_FORMAT 2001
+#define MACH_INDIRECT_ROOT_FORMAT 2002
+#define MACH_SHLIB_ROOT_FORMAT 2004
 
-
-struct symbol_root
-{
-  int format;			/* SYMBOL_ROOT_FORMAT */
-  int length;			/* # bytes in this symbol segment */
-  int ldsymoff;			/* Offset in ld symtab of this file's syms */
-  int textrel;			/* Relocation for text addresses */
-  int datarel;			/* Relocation for data addresses */
-  int bssrel;			/* Relocation for bss addresses */
-  char *filename;		/* Name of main source file compiled */
-  char *filedir;		/* Name of directory it was reached from */
+struct symbol_root {
+  int format;                      /* SYMBOL_ROOT_FORMAT */
+  int length;                      /* # bytes in this symbol segment */
+  int ldsymoff;                    /* Offset in ld symtab of this file's syms */
+  int textrel;                     /* Relocation for text addresses */
+  int datarel;                     /* Relocation for data addresses */
+  int bssrel;                      /* Relocation for bss addresses */
+  char *filename;                  /* Name of main source file compiled */
+  char *filedir;                   /* Name of directory it was reached from */
   struct blockvector *blockvector; /* Vector of all symbol-naming blocks */
-  struct typevector *typevector; /* Vector of all data types */
-  enum language language;	/* Code identifying the language used */
-  char *version;		/* Version info.  Not fully specified */
-  char *compilation;		/* Compilation info.  Not fully specified */
-  int databeg;			/* Address within the file of data start */
-  int bssbeg;			/* Address within the file of bss start */
+  struct typevector *typevector;   /* Vector of all data types */
+  enum language language;          /* Code identifying the language used */
+  char *version;                   /* Version info.  Not fully specified */
+  char *compilation;               /* Compilation info.  Not fully specified */
+  int databeg;                     /* Address within the file of data start */
+  int bssbeg;                      /* Address within the file of bss start */
   struct sourcevector *sourcevector; /* Vector of line-number info */
 };
 
-struct mach_root
-{
-  int format;			/* MACH_ROOT_FORMAT */
-  int length;			/* # bytes in this symbol segment */
-  int ldsymoff;			/* Offset in ld symtab of this file's syms */
-  struct loadmap *loadmap;	/* load map of the relocatable object */
-  char *filename;		/* Name of main source file compiled */
-  char *filedir;		/* Name of directory it was reached from */
+struct mach_root {
+  int format;                      /* MACH_ROOT_FORMAT */
+  int length;                      /* # bytes in this symbol segment */
+  int ldsymoff;                    /* Offset in ld symtab of this file's syms */
+  struct loadmap *loadmap;         /* load map of the relocatable object */
+  char *filename;                  /* Name of main source file compiled */
+  char *filedir;                   /* Name of directory it was reached from */
   struct blockvector *blockvector; /* Vector of all symbol-naming blocks */
-  struct typevector *typevector; /* Vector of all data types */
-  enum language language;	/* Code identifying the language used */
-  char *version;		/* Version info.  Not fully specified */
-  char *compilation;		/* Compilation info.  Not fully specified */
+  struct typevector *typevector;   /* Vector of all data types */
+  enum language language;          /* Code identifying the language used */
+  char *version;                   /* Version info.  Not fully specified */
+  char *compilation;               /* Compilation info.  Not fully specified */
   struct sourcevector *sourcevector; /* Vector of line-number info */
 };
 
@@ -156,18 +152,18 @@ struct mach_root
  * This is for lazy evaluation of the -gg symbol segments.
  */
 struct indirect_root {
-  int format;		/* INDIRECT_ROOT_FORMAT */
-  int length;		/* length of this struct, rounded to sizeof(uint32_t) */
-  int ldsymoff;		/* Offset in ld symtab of this file's syms */
-  int textrel;		/* Relocation for text addresses */
-  int datarel;		/* Relocation for data addresses */
-  int bssrel;		/* Relocation for bss addresses */
-  int textsize;		/* text size */
-  int datasize;		/* data size */
-  int bsssize;		/* bss size */
-  int mtime;		/* last modified time, as returned by stat(2) */
-  int fileoffset;	/* Offset in file that contains symbol_root */
-  char filename[1];	/* variable length file name, zero padded */
+  int format;       /* INDIRECT_ROOT_FORMAT */
+  int length;       /* length of this struct, rounded to sizeof(uint32_t) */
+  int ldsymoff;     /* Offset in ld symtab of this file's syms */
+  int textrel;      /* Relocation for text addresses */
+  int datarel;      /* Relocation for data addresses */
+  int bssrel;       /* Relocation for bss addresses */
+  int textsize;     /* text size */
+  int datasize;     /* data size */
+  int bsssize;      /* bss size */
+  int mtime;        /* last modified time, as returned by stat(2) */
+  int fileoffset;   /* Offset in file that contains symbol_root */
+  char filename[1]; /* variable length file name, zero padded */
 };
 
 /*
@@ -175,14 +171,14 @@ struct indirect_root {
  * default).  This is for lazy evaluation of the -gg symbol segments.
  */
 struct mach_indirect_root {
-  int format;		/* MACH_INDIRECT_ROOT_FORMAT */
-  int length;		/* length of this struct, rounded to sizeof(uint32_t) */
-  int ldsymoff;		/* Offset in ld symtab of this file's syms */
+  int format;   /* MACH_INDIRECT_ROOT_FORMAT */
+  int length;   /* length of this struct, rounded to sizeof(uint32_t) */
+  int ldsymoff; /* Offset in ld symtab of this file's syms */
   struct loadmap *loadmap; /* load map of the relocatable object */
-  int mtime;		/* last modified time, as returned by stat(2) */
-  int fileoffset;	/* Offset in relocatable file that contains the 
-			   mach_root */
-  char filename[1];	/* variable length file name, zero padded */
+  int mtime;               /* last modified time, as returned by stat(2) */
+  int fileoffset;          /* Offset in relocatable file that contains the
+                              mach_root */
+  char filename[1];        /* variable length file name, zero padded */
 };
 
 /*
@@ -190,19 +186,19 @@ struct mach_indirect_root {
  * defines the storage for that symbol name is recorded in here.
  */
 struct common_root {
-  int format;		/* COMMON_SYM_FORMAT */
-  int length;		/* length of this struct, rounded to sizeof(uint32_t) */
-  int nsyms;		/* the number of strings in the data[] field for the
-			   common symbols names of this file */
-  char data[1];		
+  int format; /* COMMON_SYM_FORMAT */
+  int length; /* length of this struct, rounded to sizeof(uint32_t) */
+  int nsyms;  /* the number of strings in the data[] field for the
+                 common symbols names of this file */
+  char data[1];
   /* Data looks like the following:
     - Null terminated string for the filename.
-	- Null terminated stings for syms.
-	...
+        - Null terminated stings for syms.
+        ...
     - zero padded to round to sizeof(uint32_t)
    */
 };
- 
+
 /*
  * shlib_root: Written by ld for target shared library output.  This has two
  * fields for each of the data segment fields. The data segments of .o files
@@ -217,29 +213,29 @@ struct common_root {
  * then the symbol root from each object is written into the shared library.
  */
 struct shlib_root {
-  int format;		/* SHLIB_ROOT_FORMAT */
-  int length;		/* length of this struct, rounded to sizeof(uint32_t) */
-  int ldsymoff;		/* Offset in ld symtab of this file's syms */
-  int textrel;		/* Relocation for text addresses */
-  int globaldatarel;	/* Relocation for global data addresses */
-  int staticdatarel;	/* Relocation for static data addresses */
-  int globaldatabeg;	/* Address of the global data start */
-  int staticdatabeg;	/* Address of the static data start */
-  int globaldatasize;	/* global data size */
-  int staticdatasize;	/* static data size */
-  int symreloffset;	/* relitive offset, from the first SYMBOL_ROOT_FORMAT
-			   of the symbol root for this file */
-  char filename[1];	/* variable length file name, zero padded */
+  int format;         /* SHLIB_ROOT_FORMAT */
+  int length;         /* length of this struct, rounded to sizeof(uint32_t) */
+  int ldsymoff;       /* Offset in ld symtab of this file's syms */
+  int textrel;        /* Relocation for text addresses */
+  int globaldatarel;  /* Relocation for global data addresses */
+  int staticdatarel;  /* Relocation for static data addresses */
+  int globaldatabeg;  /* Address of the global data start */
+  int staticdatabeg;  /* Address of the static data start */
+  int globaldatasize; /* global data size */
+  int staticdatasize; /* static data size */
+  int symreloffset;   /* relitive offset, from the first SYMBOL_ROOT_FORMAT
+                         of the symbol root for this file */
+  char filename[1];   /* variable length file name, zero padded */
 };
 
 struct mach_shlib_root {
-  int format;		/* MACH_SHLIB_ROOT_FORMAT */
-  int length;		/* length of this struct, rounded to sizeof(uint32_t) */
-  int ldsymoff;		/* Offset in ld symtab of this file's syms */
+  int format;   /* MACH_SHLIB_ROOT_FORMAT */
+  int length;   /* length of this struct, rounded to sizeof(uint32_t) */
+  int ldsymoff; /* Offset in ld symtab of this file's syms */
   struct loadmap *loadmap; /* load map of the relocatable object */
-  int symreloffset;	/* relitive offset, from the first SYMBOL_ROOT_FORMAT
-			   of the symbol root for this file */
-  char filename[1];	/* variable length file name, zero padded */
+  int symreloffset;        /* relitive offset, from the first SYMBOL_ROOT_FORMAT
+                              of the symbol root for this file */
+  char filename[1];        /* variable length file name, zero padded */
 };
 
 /*
@@ -248,15 +244,15 @@ struct mach_shlib_root {
  * the .o file from 'original' to 'alias' in the a.out file.
  */
 struct alias_root {
-  int format;		/* ALIAS_SYM_FORMAT */
-  int length;		/* length of this struct, rounded to sizeof(uint32_t) */
-  int naliases;		/* number of pairs of aliased symbols */
-  char data[1];		
+  int format;   /* ALIAS_SYM_FORMAT */
+  int length;   /* length of this struct, rounded to sizeof(uint32_t) */
+  int naliases; /* number of pairs of aliased symbols */
+  char data[1];
   /* Data looks like the following:
-	- Pairs of:
-	    - Null terminated string for the original symbol
-	    - Null terminated string for the aliased symbol
-	- zero padded to round to sizeof(uint32_t)
+        - Pairs of:
+            - Null terminated string for the original symbol
+            - Null terminated string for the aliased symbol
+        - zero padded to round to sizeof(uint32_t)
    */
 };
 
@@ -268,51 +264,46 @@ struct alias_root {
  * the link editor to scatter load a section based on information that improves
  * performance by increasing the locality of reference.
  */
-struct loadmap
-{
+struct loadmap {
   /* Number of maps in the list.  */
   int nmaps;
   /* The maps themselves.  */
   struct map *map[1];
 };
-struct map
-{
+struct map {
   /* The starting address in the relocatable object and size of part of the
      object file. */
   int reladdr, size;
   /* The address the loader loaded this part of the object file at */
-  int ldaddr;	
+  int ldaddr;
 };
 
-
 /* All data types of symbols in the compiled program
    are represented by `struct type' objects.
    All of these objects are pointed to by the typevector.
    The type vector may have empty slots that contain zero.  */
 
-struct typevector
-{
-  int length;			/* Number of types described */
+struct typevector {
+  int length; /* Number of types described */
   struct type *type[1];
 };
 
 /* Different kinds of data types are distinguished by the `code' field.  */
 
-enum type_code
-{
-  TYPE_CODE_UNDEF,		/* Not used; catches errors */
-  TYPE_CODE_PTR,		/* Pointer type */
-  TYPE_CODE_ARRAY,		/* Array type, lower bound zero */
-  TYPE_CODE_STRUCT,		/* C struct or Pascal record */
-  TYPE_CODE_UNION,		/* C union or Pascal variant part */
-  TYPE_CODE_ENUM,		/* Enumeration type */
-  TYPE_CODE_FUNC,		/* Function type */
-  TYPE_CODE_INT,		/* Integer type */
-  TYPE_CODE_FLT,		/* Floating type */
-  TYPE_CODE_VOID,		/* Void type (values zero length) */
-  TYPE_CODE_SET,		/* Pascal sets */
-  TYPE_CODE_RANGE,		/* Range (integers within spec'd bounds) */
-  TYPE_CODE_PASCAL_ARRAY,	/* Array with explicit type of index */
+enum type_code {
+  TYPE_CODE_UNDEF,        /* Not used; catches errors */
+  TYPE_CODE_PTR,          /* Pointer type */
+  TYPE_CODE_ARRAY,        /* Array type, lower bound zero */
+  TYPE_CODE_STRUCT,       /* C struct or Pascal record */
+  TYPE_CODE_UNION,        /* C union or Pascal variant part */
+  TYPE_CODE_ENUM,         /* Enumeration type */
+  TYPE_CODE_FUNC,         /* Function type */
+  TYPE_CODE_INT,          /* Integer type */
+  TYPE_CODE_FLT,          /* Floating type */
+  TYPE_CODE_VOID,         /* Void type (values zero length) */
+  TYPE_CODE_SET,          /* Pascal sets */
+  TYPE_CODE_RANGE,        /* Range (integers within spec'd bounds) */
+  TYPE_CODE_PASCAL_ARRAY, /* Array with explicit type of index */
 };
 
 /* This appears in a type's flags word for an unsigned integer type.  */
@@ -320,8 +311,7 @@ enum type_code
 
 /* Other flag bits are used with GDB.  */
 
-struct type
-{
+struct type {
   /* Code for kind of type */
   enum type_code code;
   /* Name of this type, or zero if none.
@@ -338,7 +328,7 @@ struct type
   /* Type that is a pointer to this type.
      Zero if no such pointer-to type is known yet.
      The debugger may add the address of such a type
-     if it has to construct one later.  */ 
+     if it has to construct one later.  */
   struct type *pointer_type;
   /* Type that is a function returning this type.
      Zero if no such function type is known here.
@@ -362,27 +352,26 @@ struct type
      allows all types to have the same size, which is useful
      because we can allocate the space for a type before
      we know what to put in it.  */
-  struct field
-    {
-      /* Position of this field, counting in bits from start of
-	 containing structure.  For a function type, this is the
-	 position in the argument list of this argument.
-	 For a range bound or enum value, this is the value itself.  */
-      int bitpos;
-      /* Size of this field, in bits, or zero if not packed.
-	 For an unpacked field, the field's type's length
-	 says how many bytes the field occupies.  */
-      int bitsize;
-      /* In a struct or enum type, type of this field.
-	 In a function type, type of this argument.
-	 In an array type, the domain-type of the array.  */
-      struct type *type;
-      /* Name of field, value or argument.
-	 Zero for range bounds and array domains.  */
-      char *name;
-    } *fields;
+  struct field {
+    /* Position of this field, counting in bits from start of
+       containing structure.  For a function type, this is the
+       position in the argument list of this argument.
+       For a range bound or enum value, this is the value itself.  */
+    int bitpos;
+    /* Size of this field, in bits, or zero if not packed.
+       For an unpacked field, the field's type's length
+       says how many bytes the field occupies.  */
+    int bitsize;
+    /* In a struct or enum type, type of this field.
+       In a function type, type of this argument.
+       In an array type, the domain-type of the array.  */
+    struct type *type;
+    /* Name of field, value or argument.
+       Zero for range bounds and array domains.  */
+    char *name;
+  } *fields;
 };
-
+
 /* All of the name-scope contours of the program
    are represented by `struct block' objects.
    All of these objects are pointed to by the blockvector.
@@ -409,16 +398,14 @@ struct type
    This implies that within the body of one function
    the blocks appear in the order of a depth-first tree walk.  */
 
-struct blockvector
-{
+struct blockvector {
   /* Number of blocks in the list.  */
   int nblocks;
   /* The blocks themselves.  */
   struct block *block[1];
 };
 
-struct block
-{
+struct block {
   /* Addresses in the executable code that are in this block.
      Note: in an unrelocated symbol segment in a file,
      these are always zero.  They can be filled in from the
@@ -446,7 +433,7 @@ struct block
   /* The symbols.  */
   struct symbol *sym[1];
 };
-
+
 /* Represent one symbol name; a variable, constant, function or typedef.  */
 
 /* Different name spaces for symbols.  Looking up a symbol specifies
@@ -469,37 +456,37 @@ struct block
    This index number can be matched with the "desc" field of
    an entry in the loader symbol table.  */
 
-enum namespace
-{
-  UNDEF_NAMESPACE, VAR_NAMESPACE, STRUCT_NAMESPACE, LABEL_NAMESPACE,
+enum namespace {
+  UNDEF_NAMESPACE,
+  VAR_NAMESPACE,
+  STRUCT_NAMESPACE,
+  LABEL_NAMESPACE,
 };
 
 /* An address-class says where to find the value of the symbol in core.  */
 
-enum address_class
-{
-  LOC_UNDEF,		/* Not used; catches errors */
-  LOC_CONST,		/* Value is constant int */
-  LOC_STATIC,		/* Value is at fixed address */
-  LOC_REGISTER,		/* Value is in register */
-  LOC_ARG,		/* Value is at spec'd position in arglist */
-  LOC_LOCAL,		/* Value is at spec'd pos in stack frame */
-  LOC_TYPEDEF,		/* Value not used; definition in SYMBOL_TYPE
-			   Symbols in the namespace STRUCT_NAMESPACE
-			   all have this class.  */
-  LOC_LABEL,		/* Value is address in the code */
-  LOC_BLOCK,		/* Value is address of a `struct block'.
-			   Function names have this class.  */
-  LOC_EXTERNAL,		/* Value is at address not in this compilation.
-			   This is used for .comm symbols
-			   and for extern symbols within functions.
-			   Inside GDB, this is changed to LOC_STATIC once the
-			   real address is obtained from a loader symbol.  */
-  LOC_CONST_BYTES	/* Value is a constant byte-sequence.   */
+enum address_class {
+  LOC_UNDEF,      /* Not used; catches errors */
+  LOC_CONST,      /* Value is constant int */
+  LOC_STATIC,     /* Value is at fixed address */
+  LOC_REGISTER,   /* Value is in register */
+  LOC_ARG,        /* Value is at spec'd position in arglist */
+  LOC_LOCAL,      /* Value is at spec'd pos in stack frame */
+  LOC_TYPEDEF,    /* Value not used; definition in SYMBOL_TYPE
+                     Symbols in the namespace STRUCT_NAMESPACE
+                     all have this class.  */
+  LOC_LABEL,      /* Value is address in the code */
+  LOC_BLOCK,      /* Value is address of a `struct block'.
+                     Function names have this class.  */
+  LOC_EXTERNAL,   /* Value is at address not in this compilation.
+                     This is used for .comm symbols
+                     and for extern symbols within functions.
+                     Inside GDB, this is changed to LOC_STATIC once the
+                     real address is obtained from a loader symbol.  */
+  LOC_CONST_BYTES /* Value is a constant byte-sequence.   */
 };
 
-struct symbol
-{
+struct symbol {
   /* Symbol name */
   char *name;
   /* Name space code.  */
@@ -510,23 +497,20 @@ struct symbol
   struct type *type;
   /* constant value, or address if static, or register number,
      or offset in arguments, or offset in stack frame.  */
-  union
-    {
-      long value;
-      struct block *block;      /* for LOC_BLOCK */
-      char *bytes;		/* for LOC_CONST_BYTES */
-    }
-  value;
+  union {
+    long value;
+    struct block *block; /* for LOC_BLOCK */
+    char *bytes;         /* for LOC_CONST_BYTES */
+  } value;
 };
-
+
 /* Source-file information.
    This describes the relation between source files and line numbers
    and addresses in the program text.  */
 
-struct sourcevector
-{
-  int length;			/* Number of source files described */
-  struct source *source[1];	/* Descriptions of the files */
+struct sourcevector {
+  int length;               /* Number of source files described */
+  struct source *source[1]; /* Descriptions of the files */
 };
 
 /* Each item is either minus a line number, or a program counter.
@@ -539,16 +523,14 @@ struct sourcevector
    are used when there are lines to skip with no code on them.
    This is to make the table shorter.  */
 
-struct linetable
-  {
-    int nitems;
-    int item[1];
-  };
+struct linetable {
+  int nitems;
+  int item[1];
+};
 
 /* All the information on one source file.  */
 
-struct source
-{
-  char *name;			/* Name of file */
+struct source {
+  char *name; /* Name of file */
   struct linetable contents;
 };

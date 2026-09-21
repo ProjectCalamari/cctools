@@ -35,51 +35,51 @@
 
 /* Type for the possible levels of stripping, in increasing order */
 enum strip_levels {
-    STRIP_NONE,
-    STRIP_DUP_INCLS,
-    STRIP_L_SYMBOLS,
-    STRIP_MIN_DEBUG,
-    STRIP_DEBUG,
-    STRIP_NONGLOBALS,
-    STRIP_DYNAMIC_EXECUTABLE,
-    STRIP_ALL
+  STRIP_NONE,
+  STRIP_DUP_INCLS,
+  STRIP_L_SYMBOLS,
+  STRIP_MIN_DEBUG,
+  STRIP_DEBUG,
+  STRIP_NONGLOBALS,
+  STRIP_DYNAMIC_EXECUTABLE,
+  STRIP_ALL
 };
 
 /* The error level check for undefined symbols */
 enum undefined_check_level {
-    UNDEFINED_ERROR,
-    UNDEFINED_WARNING,
-    UNDEFINED_SUPPRESS,
-    UNDEFINED_DYNAMIC_LOOKUP,
-    UNDEFINED_DEFINE_A_WAY
+  UNDEFINED_ERROR,
+  UNDEFINED_WARNING,
+  UNDEFINED_SUPPRESS,
+  UNDEFINED_DYNAMIC_LOOKUP,
+  UNDEFINED_DEFINE_A_WAY
 };
 
 /* The error level check for (twolevel namespace) multiply defined symbols */
 enum multiply_defined_check_level {
-    MULTIPLY_DEFINED_ERROR,
-    MULTIPLY_DEFINED_WARNING,
-    MULTIPLY_DEFINED_SUPPRESS
+  MULTIPLY_DEFINED_ERROR,
+  MULTIPLY_DEFINED_WARNING,
+  MULTIPLY_DEFINED_SUPPRESS
 };
 
 /* The error level check for read only relocs */
 enum read_only_reloc_check_level {
-    READ_ONLY_RELOC_ERROR,
-    READ_ONLY_RELOC_WARNING,
-    READ_ONLY_RELOC_SUPPRESS
+  READ_ONLY_RELOC_ERROR,
+  READ_ONLY_RELOC_WARNING,
+  READ_ONLY_RELOC_SUPPRESS
 };
 
 /* The error level check for section difference relocs */
 enum sect_diff_reloc_check_level {
-    SECT_DIFF_RELOC_ERROR,
-    SECT_DIFF_RELOC_WARNING,
-    SECT_DIFF_RELOC_SUPPRESS
+  SECT_DIFF_RELOC_ERROR,
+  SECT_DIFF_RELOC_WARNING,
+  SECT_DIFF_RELOC_SUPPRESS
 };
 
 /* The error handling for weak reference mismatches */
 enum weak_reference_mismatches_handling {
-    WEAK_REFS_MISMATCH_ERROR,
-    WEAK_REFS_MISMATCH_WEAK,
-    WEAK_REFS_MISMATCH_NON_WEAK
+  WEAK_REFS_MISMATCH_ERROR,
+  WEAK_REFS_MISMATCH_WEAK,
+  WEAK_REFS_MISMATCH_NON_WEAK
 };
 
 __private_extern__ struct macosx_deployment_target macosx_deployment_target;
@@ -118,46 +118,36 @@ __private_extern__ enum bool force_cpusubtype_ALL;
 /* the byte sex of the output file */
 __private_extern__ enum byte_sex target_byte_sex;
 
-__private_extern__
-enum bool trace;		/* print stages of link-editing */
-__private_extern__
-enum bool save_reloc;		/* save relocation information */
-__private_extern__
-enum bool output_for_dyld;	/* produce output for use with dyld */
-__private_extern__
-enum bool bind_at_load;		/* mark the output for dyld to be bound
-				   when loaded */
-__private_extern__
-enum bool no_fix_prebinding;	/* mark the output for dyld to never
-				   run fix_prebinding */
-__private_extern__
-enum bool load_map;		/* print a load map */
-__private_extern__
-enum bool define_comldsyms;	/* define common and link-editor defined
-					   symbol reguardless of file type */
-__private_extern__
-enum bool seglinkedit;		/* create the link edit segment */
-__private_extern__
-enum bool whyload;		/* print why archive members are
-					   loaded */
-__private_extern__
-enum bool flush;		/* Use the output_flush routine to flush
-				   output file by pages */
-__private_extern__
-enum bool sectorder_detail;	/* print sectorder warnings in detail */
-__private_extern__
-enum bool nowarnings;		/* suppress warnings */
-__private_extern__
-enum bool no_arch_warnings;	/* suppress wrong arch warnings */
-__private_extern__
-enum bool arch_errors_fatal;	/* cause wrong arch errors to be fatal */
-__private_extern__
-enum bool archive_ObjC;		/* objective-C archive semantics */
-__private_extern__
-enum bool archive_all;		/* always load everything in archives */
-__private_extern__
-enum bool keep_private_externs;	/* don't turn private externs into
-					   non-external symbols */
+__private_extern__ enum bool trace;      /* print stages of link-editing */
+__private_extern__ enum bool save_reloc; /* save relocation information */
+__private_extern__ enum bool
+    output_for_dyld; /* produce output for use with dyld */
+__private_extern__ enum bool bind_at_load; /* mark the output for dyld to be
+                                              bound when loaded */
+__private_extern__ enum bool no_fix_prebinding; /* mark the output for dyld to
+                                                   never run fix_prebinding */
+__private_extern__ enum bool load_map;          /* print a load map */
+__private_extern__ enum bool
+    define_comldsyms; /* define common and link-editor defined
+                                 symbol reguardless of file type */
+__private_extern__ enum bool seglinkedit; /* create the link edit segment */
+__private_extern__ enum bool whyload;     /* print why archive members are
+                                                     loaded */
+__private_extern__ enum bool flush; /* Use the output_flush routine to flush
+                                       output file by pages */
+__private_extern__ enum bool
+    sectorder_detail; /* print sectorder warnings in detail */
+__private_extern__ enum bool nowarnings; /* suppress warnings */
+__private_extern__ enum bool
+    no_arch_warnings; /* suppress wrong arch warnings */
+__private_extern__ enum bool
+    arch_errors_fatal; /* cause wrong arch errors to be fatal */
+__private_extern__ enum bool archive_ObjC; /* objective-C archive semantics */
+__private_extern__ enum bool
+    archive_all; /* always load everything in archives */
+__private_extern__ enum bool
+    keep_private_externs; /* don't turn private externs into
+                                     non-external symbols */
 /* TRUE if -dynamic is specified, FALSE if -static is specified */
 __private_extern__ enum bool dynamic;
 
@@ -210,8 +200,7 @@ __private_extern__ unsigned long ndylib_files;
 __private_extern__ enum undefined_check_level undefined_flag;
 
 /* The checking for (twolevel namespace) multiply defined symbols */
-__private_extern__ enum multiply_defined_check_level
-    multiply_defined_flag;
+__private_extern__ enum multiply_defined_check_level multiply_defined_flag;
 __private_extern__ enum multiply_defined_check_level
     multiply_defined_unused_flag;
 /* the -nomultidefs option */
@@ -243,13 +232,13 @@ __private_extern__ enum bool segalign_specified;
 /* The size of pagezero from the -pagezero_size flag */
 __private_extern__ unsigned long pagezero_size;
 /* The maximum segment alignment allowed to be specified, in hex */
-#define MAXSEGALIGN		0x8000
+#define MAXSEGALIGN 0x8000
 /* The default section alignment */
 __private_extern__ unsigned long defaultsectalign;
 /* The maximum section alignment allowed to be specified, as a power of two */
-#define MAXSECTALIGN		15 /* 2**15 or 0x8000 */
+#define MAXSECTALIGN 15 /* 2**15 or 0x8000 */
 /* The default section alignment if not specified, as a power of two */
-#define DEFAULTSECTALIGN	4  /* 2**4 or 16 */
+#define DEFAULTSECTALIGN 4 /* 2**4 or 16 */
 
 /* The first segment address */
 __private_extern__ unsigned long seg1addr;
@@ -337,42 +326,34 @@ __private_extern__ enum bool force_flat_namespace;
 
 __private_extern__ enum bool twolevel_namespace_hints;
 
-__private_extern__ void *allocate(
-    unsigned long size);
-__private_extern__ void *reallocate(
-    void *,
-    unsigned long size);
-__private_extern__ unsigned long rnd(
-    unsigned long v,
-    unsigned long r);
-__private_extern__ void tell_ProjectBuilder(
-    char *message);
-__private_extern__ void print(
-    const char *format, ...) __attribute__ ((format (printf, 1, 2)));
-__private_extern__ void ld_trace(
-    const char *format, ...) __attribute__ ((format (printf, 1, 2)));
-__private_extern__ void vprint(
-    const char *format, va_list ap);
-__private_extern__ void warning(
-    const char *format, ...) __attribute__ ((format (printf, 1, 2)));
-__private_extern__ void error(
-    const char *format, ...) __attribute__ ((format (printf, 1, 2)));
-__private_extern__ void fatal(
-    const char *format, ...) __attribute__ ((format (printf, 1, 2)));
-__private_extern__ void warning_with_cur_obj(
-    const char *format, ...) __attribute__ ((format (printf, 1, 2)));
-__private_extern__ void error_with_cur_obj(
-    const char *format, ...) __attribute__ ((format (printf, 1, 2)));
-__private_extern__ void system_warning(
-    const char *format, ...) __attribute__ ((format (printf, 1, 2)));
-__private_extern__ void system_error(
-    const char *format, ...) __attribute__ ((format (printf, 1, 2)));
-__private_extern__ void system_fatal(
-    const char *format, ...) __attribute__ ((format (printf, 1, 2)));
-__private_extern__ void mach_fatal(
-    kern_return_t r,
-    char *format, ...) __attribute__ ((format (printf, 2, 3)));
+__private_extern__ void *allocate(unsigned long size);
+__private_extern__ void *reallocate(void *, unsigned long size);
+__private_extern__ unsigned long rnd(unsigned long v, unsigned long r);
+__private_extern__ void tell_ProjectBuilder(char *message);
+__private_extern__ void print(const char *format, ...)
+    __attribute__((format(printf, 1, 2)));
+__private_extern__ void ld_trace(const char *format, ...)
+    __attribute__((format(printf, 1, 2)));
+__private_extern__ void vprint(const char *format, va_list ap);
+__private_extern__ void warning(const char *format, ...)
+    __attribute__((format(printf, 1, 2)));
+__private_extern__ void error(const char *format, ...)
+    __attribute__((format(printf, 1, 2)));
+__private_extern__ void fatal(const char *format, ...)
+    __attribute__((format(printf, 1, 2)));
+__private_extern__ void warning_with_cur_obj(const char *format, ...)
+    __attribute__((format(printf, 1, 2)));
+__private_extern__ void error_with_cur_obj(const char *format, ...)
+    __attribute__((format(printf, 1, 2)));
+__private_extern__ void system_warning(const char *format, ...)
+    __attribute__((format(printf, 1, 2)));
+__private_extern__ void system_error(const char *format, ...)
+    __attribute__((format(printf, 1, 2)));
+__private_extern__ void system_fatal(const char *format, ...)
+    __attribute__((format(printf, 1, 2)));
+__private_extern__ void mach_fatal(kern_return_t r, char *format, ...)
+    __attribute__((format(printf, 2, 3)));
 
 #ifdef DEBUG
-__private_extern__ unsigned long debug;		/* link-editor debugging */
-#endif /* DEBUG */
+__private_extern__ unsigned long debug; /* link-editor debugging */
+#endif                                  /* DEBUG */

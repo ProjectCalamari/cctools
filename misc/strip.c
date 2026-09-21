@@ -790,9 +790,10 @@ static void strip_arch(struct arch *archs, uint32_t narchs,
    */
   any_processing = FALSE;
   arch_flag_processed = NULL;
-  if (narch_flags != 0)
+  if (narch_flags != 0) {
     arch_flag_processed = allocate(narch_flags * sizeof(enum bool));
-  memset(arch_flag_processed, '\0', narch_flags * sizeof(enum bool));
+    memset(arch_flag_processed, '\0', narch_flags * sizeof(enum bool));
+  }
   for (i = 0; i < narchs; i++) {
     /*
      * Determine the architecture (cputype and cpusubtype) of arch[i]
@@ -2611,6 +2612,17 @@ static void strip_object(struct arch *arch, struct member *member,
 static uint32_t get_starting_syminfo_offset(struct object *object) {
   uint32_t offset;
 
+  /*
+   * writeout() preserves everything before the input symbolic information
+   * and appends the rebuilt symbolic information at that boundary.  Use the
+   * same boundary here when rewriting load-command offsets.  In particular,
+   * symbolic information does not necessarily start at __LINKEDIT.fileoff;
+   * the segment may contain leading padding.
+   */
+  if (object->input_sym_info_size != 0 &&
+      object->input_sym_info_size <= object->object_size)
+    return ((uint32_t)(object->object_size - object->input_sym_info_size));
+
   if (object->seg_linkedit != NULL || object->seg_linkedit64 != NULL) {
     if (object->mh != NULL)
       offset = object->seg_linkedit->fileoff;
@@ -2974,8 +2986,9 @@ static void setup_debug_filenames(char *dfile) {
     debug_filenames[i] = p;
     p += strlen(p) + 1;
   }
-  qsort(debug_filenames, ndebug_filenames, sizeof(char *),
-        (int (*)(const void *, const void *))cmp_qsort_filename);
+  if (ndebug_filenames > 1)
+    qsort(debug_filenames, ndebug_filenames, sizeof(char *),
+          (int (*)(const void *, const void *))cmp_qsort_filename);
 
 #ifdef DEBUG
   printf("Debug filenames:\n");
@@ -3709,9 +3722,11 @@ static enum bool strip_symtab(struct arch *arch, struct member *member,
   if (ref_saves != NULL)
     free(ref_saves);
   ref_saves = (int32_t *)allocate(nextrefsyms * sizeof(int32_t));
-  bzero(ref_saves, nextrefsyms * sizeof(int32_t));
+  if (nextrefsyms != 0)
+    bzero(ref_saves, nextrefsyms * sizeof(int32_t));
   changes = (uint32_t *)allocate(nsyms * sizeof(int32_t));
-  bzero(changes, nsyms * sizeof(int32_t));
+  if (nsyms != 0)
+    bzero(changes, nsyms * sizeof(int32_t));
   new_nextrefsyms = 0;
   for (i = 0; i < nextrefsyms; i++) {
     if (refs[i].isym > nsyms) {
@@ -3809,8 +3824,9 @@ static enum bool strip_symtab(struct arch *arch, struct member *member,
    * itself. It simply preserves the uniqueness when deserializing and
    * reserializing the strings table.
    */
-  qsort(strx_map, strx_count, sizeof(*strx_map),
-        (int (*)(const void *, const void *))cmp_qsort_strx_map);
+  if (strx_count > 1)
+    qsort(strx_map, strx_count, sizeof(*strx_map),
+          (int (*)(const void *, const void *))cmp_qsort_strx_map);
   for (j = 0; j < strx_count; ++j) {
     if (strx_map[strx_uniqcount].old_strx != strx_map[j].old_strx) {
       strx_uniqcount += 1;
@@ -4126,12 +4142,14 @@ static enum bool strip_symtab(struct arch *arch, struct member *member,
   }
   /* Sort the undefined symbols by name */
   qsort_strings = new_strings;
-  if (object->mh != NULL)
-    qsort(undef_map, new_nundefsym, sizeof(struct undef_map),
-          (int (*)(const void *, const void *))cmp_qsort_undef_map);
-  else
-    qsort(undef_map64, new_nundefsym, sizeof(struct undef_map64),
-          (int (*)(const void *, const void *))cmp_qsort_undef_map_64);
+  if (new_nundefsym > 1) {
+    if (object->mh != NULL)
+      qsort(undef_map, new_nundefsym, sizeof(struct undef_map),
+            (int (*)(const void *, const void *))cmp_qsort_undef_map);
+    else
+      qsort(undef_map64, new_nundefsym, sizeof(struct undef_map64),
+            (int (*)(const void *, const void *))cmp_qsort_undef_map_64);
+  }
   /* Copy the symbols now in sorted order into new_symbols */
   for (i = 0; i < new_nundefsym; i++) {
     if (object->mh != NULL) {
@@ -5468,12 +5486,14 @@ static enum bool edit_symtab(
    * the compiler generates and trying to match that here.
    */
   global_strings = strings;
-  if (object->mh != NULL)
-    qsort(changed_globals, nchanged_globals, sizeof(struct nlist *),
-          (int (*)(const void *, const void *))cmp_qsort_global);
-  else
-    qsort(changed_globals64, nchanged_globals, sizeof(struct nlist_64 *),
-          (int (*)(const void *, const void *))cmp_qsort_global_64);
+  if (nchanged_globals > 1) {
+    if (object->mh != NULL)
+      qsort(changed_globals, nchanged_globals, sizeof(struct nlist *),
+            (int (*)(const void *, const void *))cmp_qsort_global);
+    else
+      qsort(changed_globals64, nchanged_globals, sizeof(struct nlist_64 *),
+            (int (*)(const void *, const void *))cmp_qsort_global_64);
+  }
   dwarf_debug_map = FALSE;
   for (i = 0; i < nsyms; i++) {
     uint16_t n_desc;

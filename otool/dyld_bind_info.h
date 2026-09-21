@@ -1,8 +1,8 @@
 #ifndef DYLD_BIND_INFO
 #define DYLD_BIND_INFO
 
-#include <stdint.h>
 #include <mach-o/loader.h>
+#include <stdint.h>
 #include <stuff/bool.h>
 #include <stuff/bytesex.h>
 /*

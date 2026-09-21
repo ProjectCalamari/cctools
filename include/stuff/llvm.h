@@ -1,9 +1,9 @@
 #ifndef _STUFF_LLVM_H_
 #define _STUFF_LLVM_H_
 
+#include "llvm-c/Disassembler.h"
 #include <stddef.h>
 #include <stdint.h>
-#include "llvm-c/Disassembler.h"
 
 void *llvm_load(void);
 

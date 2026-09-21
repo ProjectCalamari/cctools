@@ -938,8 +938,9 @@ static void copy_new_symbol_info(char *p, uint32_t *size,
                object->output_function_variant_fixups_data_size);
       *size += object->output_function_variant_fixups_data_size;
     }
-    memcpy(p + *size, object->output_loc_relocs,
-           dyst->nlocrel * sizeof(struct relocation_info));
+    if (dyst->nlocrel != 0)
+      memcpy(p + *size, object->output_loc_relocs,
+             dyst->nlocrel * sizeof(struct relocation_info));
     *size += dyst->nlocrel * sizeof(struct relocation_info);
     if (object->output_split_info_data_size != 0) {
       if (object->output_split_info_data != NULL)
@@ -984,40 +985,51 @@ static void copy_new_symbol_info(char *p, uint32_t *size,
                object->output_link_opt_hint_info_data_size);
       *size += object->output_link_opt_hint_info_data_size;
     }
-    if (object->mh != NULL) {
-      memcpy(p + *size, object->output_symbols,
-             object->output_nsymbols * sizeof(struct nlist));
-      *size += object->output_nsymbols * sizeof(struct nlist);
-    } else {
-      memcpy(p + *size, object->output_symbols64,
-             object->output_nsymbols * sizeof(struct nlist_64));
-      *size += object->output_nsymbols * sizeof(struct nlist_64);
+    if (object->output_nsymbols != 0) {
+      if (object->mh != NULL) {
+        memcpy(p + *size, object->output_symbols,
+               object->output_nsymbols * sizeof(struct nlist));
+      } else {
+        memcpy(p + *size, object->output_symbols64,
+               object->output_nsymbols * sizeof(struct nlist_64));
+      }
     }
+    if (object->mh != NULL)
+      *size += object->output_nsymbols * sizeof(struct nlist);
+    else
+      *size += object->output_nsymbols * sizeof(struct nlist_64);
     if (old_hints_cmd != NULL) {
-      memcpy(p + *size, object->output_hints,
-             hints_cmd->nhints * sizeof(struct twolevel_hint));
+      if (hints_cmd->nhints != 0)
+        memcpy(p + *size, object->output_hints,
+               hints_cmd->nhints * sizeof(struct twolevel_hint));
       *size += hints_cmd->nhints * sizeof(struct twolevel_hint);
     }
-    memcpy(p + *size, object->output_ext_relocs,
-           dyst->nextrel * sizeof(struct relocation_info));
+    if (dyst->nextrel != 0)
+      memcpy(p + *size, object->output_ext_relocs,
+             dyst->nextrel * sizeof(struct relocation_info));
     *size += dyst->nextrel * sizeof(struct relocation_info);
-    memcpy(p + *size, object->output_indirect_symtab,
-           dyst->nindirectsyms * sizeof(uint32_t));
+    if (dyst->nindirectsyms != 0)
+      memcpy(p + *size, object->output_indirect_symtab,
+             dyst->nindirectsyms * sizeof(uint32_t));
     *size += dyst->nindirectsyms * sizeof(uint32_t) + output_indirectsym_pad;
-    memcpy(p + *size, object->output_tocs,
-           object->output_ntoc * sizeof(struct dylib_table_of_contents));
+    if (object->output_ntoc != 0)
+      memcpy(p + *size, object->output_tocs,
+             object->output_ntoc * sizeof(struct dylib_table_of_contents));
     *size += object->output_ntoc * sizeof(struct dylib_table_of_contents);
     if (object->mh != NULL) {
-      memcpy(p + *size, object->output_mods,
-             object->output_nmodtab * sizeof(struct dylib_module));
+      if (object->output_nmodtab != 0)
+        memcpy(p + *size, object->output_mods,
+               object->output_nmodtab * sizeof(struct dylib_module));
       *size += object->output_nmodtab * sizeof(struct dylib_module);
     } else {
-      memcpy(p + *size, object->output_mods64,
-             object->output_nmodtab * sizeof(struct dylib_module_64));
+      if (object->output_nmodtab != 0)
+        memcpy(p + *size, object->output_mods64,
+               object->output_nmodtab * sizeof(struct dylib_module_64));
       *size += object->output_nmodtab * sizeof(struct dylib_module_64);
     }
-    memcpy(p + *size, object->output_refs,
-           object->output_nextrefsyms * sizeof(struct dylib_reference));
+    if (object->output_nextrefsyms != 0)
+      memcpy(p + *size, object->output_refs,
+             object->output_nextrefsyms * sizeof(struct dylib_reference));
     *size += object->output_nextrefsyms * sizeof(struct dylib_reference);
   } else {
     if (object->output_func_start_info_data_size != 0) {
@@ -1044,17 +1056,22 @@ static void copy_new_symbol_info(char *p, uint32_t *size,
                object->output_link_opt_hint_info_data_size);
       *size += object->output_link_opt_hint_info_data_size;
     }
-    if (object->mh != NULL) {
-      memcpy(p + *size, object->output_symbols,
-             object->output_nsymbols * sizeof(struct nlist));
-      *size += object->output_nsymbols * sizeof(struct nlist);
-    } else {
-      memcpy(p + *size, object->output_symbols64,
-             object->output_nsymbols * sizeof(struct nlist_64));
-      *size += object->output_nsymbols * sizeof(struct nlist_64);
+    if (object->output_nsymbols != 0) {
+      if (object->mh != NULL) {
+        memcpy(p + *size, object->output_symbols,
+               object->output_nsymbols * sizeof(struct nlist));
+      } else {
+        memcpy(p + *size, object->output_symbols64,
+               object->output_nsymbols * sizeof(struct nlist_64));
+      }
     }
+    if (object->mh != NULL)
+      *size += object->output_nsymbols * sizeof(struct nlist);
+    else
+      *size += object->output_nsymbols * sizeof(struct nlist_64);
   }
-  memcpy(p + *size, object->output_strings, object->output_strings_size);
+  if (object->output_strings_size != 0)
+    memcpy(p + *size, object->output_strings, object->output_strings_size);
   *size += object->output_strings_size;
   memset(p + *size, '\0', object->output_strings_size_pad);
   *size += object->output_strings_size_pad;
